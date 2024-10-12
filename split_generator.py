@@ -7,6 +7,15 @@ from transformers import AutoTokenizer
 class SplitGenerator():
     def __init__(self, tokenizer: AutoTokenizer, directory: str = 'code_examples', prefix_length: int = 30,
                    middle_length: int = 30, suffix_length: int = 30) -> None:
+        """Initialize the SplitGenerator with the tokenizer, file directory, and lengths for prefix, middle, and suffix.
+
+        Args:
+            tokenizer (AutoTokenizer): The tokenizer to be used for splitting code.
+            directory (str): The directory containing Python files for code examples.
+            prefix_length (int): The number of tokens in the prefix.
+            middle_length (int): The number of tokens in the middle section.
+            suffix_length (int): The number of tokens in the suffix.
+        """
         
         self.files = [os.path.join(root, file) for root, _, files in os.walk(directory)
                       for file in files if file.endswith('.py')]
@@ -16,6 +25,16 @@ class SplitGenerator():
         self.suffix_length = suffix_length
 
     def split_code(self, code: str, fname: str) -> List[Dict[str, str]]:
+        """Split the given code into prefix, middle, and suffix segments.
+
+        Args:
+            code (str): The complete code as a string.
+            fname (str): The filename from which the code was read.
+
+        Returns:
+            List[Dict[str, str]]: A list of dictionaries, each containing the filename, prefix, middle, and suffix.
+        """
+
 
         # Tokenize the code
         tokens = self.tokenizer.tokenize(code)
@@ -56,7 +75,13 @@ class SplitGenerator():
 
 
     def generate(self,  save_path: str, num_examples: int = 40) -> None:
-        """Generates a dataset of code completion examples from python files."""
+        """Generate a dataset of code completion examples from Python files.
+
+        Args:
+            save_path (str): The path where the generated dataset will be saved as a CSV file.
+            num_examples (int): The number of examples to generate. If there are fewer examples available, all will be used.
+        """
+        
         dataset = []
 
         for file in self.files:
