@@ -1,66 +1,61 @@
 import os
 import random
 import csv
-from typing import List, Dict
+from typing import Dict, List
+from transformers import AutoTokenizer
 
 class SplitGenerator():
-    def __init__(self, directory: str = 'code_examples', max_chars: int = 256) -> None:
+    def __init__(self, tokenizer: AutoTokenizer, directory: str = 'code_examples', prefix_length: int = 30,
+                   middle_length: int = 30, suffix_length: int = 30) -> None:
+        
         self.files = [os.path.join(root, file) for root, _, files in os.walk(directory)
                       for file in files if file.endswith('.py')]
-        self.max_chars = max_chars
+        self.tokenizer = tokenizer
+        self.prefix_length = prefix_length
+        self.middle_length = middle_length
+        self.suffix_length = suffix_length
 
     def split_code(self, code: str, fname: str) -> List[Dict[str, str]]:
-        """Generate prefix, middle, and suffix examples by splitting code into lines."""
-        examples = []
-        lines = code.splitlines()
 
-        # Initialize the variables to track the current chunk
-        current_chunk = []
-        current_length = 0
+        # Tokenize the code
+        tokens = self.tokenizer.tokenize(code)
+        total_tokens = len(tokens)
 
-        for line in lines:
-            line_length = len(line) + 1  # +1 for the newline character
-            # Check if adding this line exceeds the max character limit
-            if current_length + line_length > self.max_chars:
-                # We reached the limit, now we can make a random split
-                if len(current_chunk) > 1:  # Ensure we have at least two lines to split
-                    prefix_end = random.randint(1, len(current_chunk) - 1)  # Avoid empty prefix
-                    suffix_start = random.randint(prefix_end, len(current_chunk))  # Avoid empty suffix
+        # Check if the code is long enough
+        if total_tokens < (self.prefix_length + self.middle_length + self.suffix_length):
+            return []
 
-                    # Build the prefix, middle, and suffix with newline characters
-                    prefix = '\n'.join(current_chunk[:prefix_end]) + '\n'
-                    middle = '\n'.join(current_chunk[prefix_end:suffix_start]) + '\n'
-                    suffix = '\n'.join(current_chunk[suffix_start:]) + '\n'
+        splits = []
+        current_position = 0
 
-                    # Ensure none of the sections are empty
-                    if prefix.strip() and middle.strip() and suffix.strip():
-                        examples.append({"fname": fname, "prefix": prefix, "middle": middle, "suffix": suffix})
+        while current_position + self.prefix_length + self.middle_length + self.suffix_length <= total_tokens:
+            # Get the prefix, middle, and suffix based on the current position
+            prefix = tokens[current_position:current_position + self.prefix_length]
+            middle = tokens[current_position + self.prefix_length:current_position 
+                            + self.prefix_length + self.middle_length]
+            suffix = tokens[current_position + self.prefix_length + self.middle_length:current_position + 
+                            self.prefix_length + self.middle_length + self.suffix_length]
 
-                # Reset for the next chunk
-                current_chunk = []
-                current_length = 0
-            
-            # Add the line to the current chunk
-            current_chunk.append(line)
-            current_length += line_length
+            # Convert tokens back to text
+            prefix_text = self.tokenizer.convert_tokens_to_string(prefix)
+            middle_text = self.tokenizer.convert_tokens_to_string(middle)
+            suffix_text = self.tokenizer.convert_tokens_to_string(suffix)
 
-        # Handle any remaining lines in the current chunk after the loop
-        if current_chunk and len(current_chunk) > 1:
-            prefix_end = random.randint(1, len(current_chunk) - 1)
-            suffix_start = random.randint(prefix_end, len(current_chunk))
+            # Add the split to the result list
+            splits.append({
+                "fname": fname,
+                "prefix": prefix_text,
+                "middle": middle_text,
+                "suffix": suffix_text
+            })
 
-            # Build the prefix, middle, and suffix with newline characters
-            prefix = '\n'.join(current_chunk[:prefix_end]) + '\n'
-            middle = '\n'.join(current_chunk[prefix_end:suffix_start]) + '\n'
-            suffix = '\n'.join(current_chunk[suffix_start:]) + '\n'
+            # Move the current position to the end of the suffix for the next split
+            current_position += self.prefix_length + self.middle_length + self.suffix_length
 
-            # Ensure none of the sections are empty
-            if prefix.strip() and middle.strip() and suffix.strip():
-                examples.append({"fname": fname, "prefix": prefix, "middle": middle, "suffix": suffix})
+        return splits
 
-        return examples
 
-    def generate(self, save_path: str, num_examples: int = 40) -> None:
+    def generate(self,  save_path: str, num_examples: int = 40) -> None:
         """Generates a dataset of code completion examples from python files."""
         dataset = []
 
@@ -68,7 +63,8 @@ class SplitGenerator():
             with open(file, 'r') as f:
                 code = f.read()
                 examples = self.split_code(code, file)
-                dataset.extend(examples)
+                if len(examples) > 0:
+                    dataset.extend(examples)
 
                 if examples:
                     print(f"Generated {len(examples)} examples for file: {file}")
