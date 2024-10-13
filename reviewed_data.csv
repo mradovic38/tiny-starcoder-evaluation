@@ -1,0 +1,1799 @@
+fname|prefix|middle|suffix|mid_pred|label|comment
+code_examples\tracks_json_writer.py|"from .abstract_writer import AbstractWriter
+
+import os
+import json
+import numpy as np
+from typing import Any, List
+
+
+class TracksJsonWriter(AbstractWriter):
+    """"""
+    A class to write tracking data to JSON files.
+
+    This class handles writing both object tracks and keypoint tracks to separate JSON files.
+    It ensures that existing data can be appended without losing previous entries.
+    """"""
+
+    def __init__(self, save_dir: str = '', object_fname: str = 'object_tracks', 
+                 keypoints_fname: str = 'keypoint_tracks') -> None:
+        """"""
+        Initializes the TracksJsonWriter.
+
+        Args:
+            save_dir (str): Directory to save JSON files.
+            object_fname (str): Filename for object tracks (without extension).
+            keypoints_fname (str): Filename for keypoint tracks (without extension).
+        """"""
+        super().__init__()
+        self.save_dir = save"|"_dir
+        self.obj_path = os.path.join(self.save_dir, f'{object_fname}.json')
+        self.kp_path = os.path."|"join(self.save_dir, f'{keypoints_fname}.json')
+
+        if os.path.exists(save_dir):
+            self._remove_existing_files(files=[self.kp_path, self.obj_path]) 
+        else:
+            os.makedirs(save_dir)
+    
+    def get_object_tracks_path(self) -> str:
+        """"""Returns the path for the object tracks JSON file.""""""
+        return self.obj_path
+    
+    def get_keypoints_tracks_path(self) -> str:
+        """"""Returns the path for the keypoint tracks JSON file.""""""
+        return self.kp_path
+
+    def write(self, filename: str, tracks: Any) -> None:
+        """"""Write tracks to a JSON file.
+
+        If the file already exists, new tracks are appended.
+
+        Args:
+            filename (str): The name of the file to save tracks.
+            tracks (Any): The tracking data to write to"|"_dir
+        self.object_fname = object_fname
+        self.keypoints_fname = keypoints_fname
+
+    def _remove_existing_files(self, files"|2|Some parts make sense, but mostly incorrect.
+code_examples\club_assigner.py|" os.listdir(self.output_dir) if name.startswith('player')])
+
+    def apply_mask(self, image: np.ndarray, green_threshold: float = 0.08) -> np.ndarray:
+        """"""
+        Apply a mask to an image based on green color in HSV space. 
+        If the mask covers more than green_threshold of the image, apply the inverse of the mask.
+
+        Args:
+            image (np.ndarray): An image to apply the mask to.
+            green_threshold (float): Threshold for green color coverage.
+
+        Returns:
+            np.ndarray: The masked image.
+        """"""
+        hsv_img = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+        # Define the green color range in HSV
+        lower_green = np.array([36, 25, 25])
+        upper_green = np.array([86, 2"|"55, 255])
+
+        # Create the mask
+        mask = cv2.inRange(hsv_img, lower_green, upper_green)
+
+        # Count the number"|" of masked pixels
+        total_pixels = image.shape[0] * image.shape[1]
+        masked_pixels = cv2.countNonZero(cv2.bitwise_not(mask))
+        mask_percentage = masked_pixels / total_pixels
+        
+        if mask_percentage > green_threshold:
+            # Apply inverse mask
+            return cv2.bitwise_and(image, image, mask=cv2.bitwise_not(mask))
+        else:
+            # Apply normal mask
+            return image
+
+    def clustering(self, img: np.ndarray) -> Tuple[int, int, int]:
+        """"""
+        Perform K-Means clustering on an image to identify the dominant jersey color.
+
+        Args:
+            img (np.ndarray): The input image.
+
+        Returns:
+            Tuple[int, int, int]: The jersey color in BGR format.
+        """"""
+        # Reshape image to 2D array
+        img_reshape ="|", 25])
+
+        # Define the mask
+        mask = cv2.inRange(hsv_img, lower_green, upper_green)
+
+        # Apply mask
+      "|0|Almost entirely correct. Some parts differ, but the meaning is fully correct.
+code_examples\ball_to_player_assigner.py|"ball_speed
+        self.speed_check_frames = speed_check_frames
+        self.possession_tracker = PossessionTracker(club1, club2)
+        self.last_possession_frame = None
+        self.last_player_w_ball = None
+        self.last_possessing_team = -1
+        self.ball_exists = False
+        self.ball_lost_frame = None
+        self.ball_history = []
+        self.penalty_point_distance = penalty_point_distance
+
+    def is_ball_movement_valid(self, ball_pos: Tuple[float, float], current_frame: int) -> bool:
+        """"""
+        Checks if the ball's movement is valid based on its previous position.
+
+        Args:
+            ball_pos (Tuple[float, float]): The current position of the ball (x, y).
+            current_frame (int): The current frame number.
+
+        Returns:
+           "|" bool: True if the ball movement is valid, False otherwise.
+        """"""
+        if not self.ball_history:
+            return True  # No history, so movement is valid
+        
+        last_ball"|"_pos, last_frame = self.ball_history[-1]
+
+        if current_frame - last_frame <= self.speed_check_frames:
+            distance_moved = point_distance(ball_pos, last_ball_pos)
+
+            if distance_moved > self.max_ball_speed:
+                return False  # Movement is too large, likely invalid
+
+        return True
+
+    def assign(self, tracks: Dict[str, Any], current_frame: int, penalty_point_1_pos: Tuple[float, float], penalty_point_2_pos: Tuple[float, float]) -> Tuple[Dict[str, Any], int]:
+        """"""
+        Assigns the ball to the nearest player based on various criteria.
+
+        Args:
+            tracks (Dict[str, Any]): A dictionary containing tracked objects.
+            current_frame (int): The current frame number.
+            penalty_point_1_pos (Tuple[float, float"|" bool: True if the ball is moving, False otherwise.
+        """"""
+        if self.ball_exists:
+            return True
+
+        if self.last_possession_frame is Non"|1|The comment is entirely correct, but the following code is mostly incorrect.
+code_examples\football_video_processor.py|"()[-1]
+        possession_club1 = possession[0]
+        possession_club2 = possession[1]
+
+        # Calculate sizes for each possession segment in pixels
+        club1_width = int(bar_width * possession_club1)
+        club2_width = int(bar_width * possession_club2)
+        neutral_width = bar_width - club1_width - club2_width
+
+        club1_color = self.club_assigner.club1.player_jersey_color
+        club2_color = self.club_assigner.club2.player_jersey_color
+        neutral_color = (128, 128, 128)
+
+        # Convert Club Colors from RGB to BGR
+        club1_color = rgb_bgr_converter(club1_color)
+        club2_color = rgb_bgr_converter(club2"|"_color)
+
+        # Draw club 1's possession (left)
+        cv2.rectangle(frame, (bar_x, bar_y), (bar_x + club1_"|"width, bar_y + bar_height), club1_color, -1)
+
+        # Draw neutral possession (middle)
+        cv2.rectangle(frame, (bar_x + club1_width, bar_y), (bar_x + club1_width + neutral_width, bar_y + bar_height), neutral_color, -1)
+
+        # Draw club 2's possession (right)
+        cv2.rectangle(frame, (bar_x + club1_width + neutral_width, bar_y), (bar_x + bar_width, bar_y + bar_height), club2_color, -1)
+
+        # Draw outline for the entire progress bar
+        cv2.rectangle(frame, (bar_x, bar_y), (bar_x + bar_width, bar_y + bar_height), (0, 0, 0), 2)
+
+        # Calculate the"|"_color)
+        neutral_color = rgb_bgr_converter(neutral_color)
+
+        # Draw the progress bar
+        cv2.rectangle(frame, (bar_"|2|Some parts make sense, but for the main part of the code, the meaning is not correct.
+code_examples\football_video_processor.py|" np.ndarray:
+        """"""
+        Combines the original video frame with the projection of player positions on the field image.
+
+        Args:
+            frame (np.ndarray): The original video frame.
+            projection_frame (np.ndarray): The projected field image with annotations.
+
+        Returns:
+            np.ndarray: The combined frame.
+        """"""
+        # Target canvas size
+        canvas_width, canvas_height = 1920, 1080
+        
+        # Get dimensions of the original frame and projection frame
+        h_frame, w_frame, _ = frame.shape
+        h_proj, w_proj, _ = projection_frame.shape
+
+        # Scale the projection to 70% of its original size
+        scale_proj = 0.7
+        new_w_proj = int(w_proj * scale_proj)
+        new_h_proj = int(h_proj * scale_proj)
+        projection_resized = cv2"|".resize(projection_frame, (new_w_proj, new_h_proj))
+
+        # Create a blank canvas of 1920x1080
+        combined_"|"frame = np.zeros((canvas_height, canvas_width, 3), dtype=np.uint8)
+
+        # Copy the main frame onto the canvas (top-left corner)
+        combined_frame[:h_frame, :w_frame] = frame
+
+        # Set the position for the projection frame at the bottom-middle
+        x_offset = (canvas_width - new_w_proj) // 2
+        y_offset = canvas_height - new_h_proj - 25  # 25px margin from bottom
+
+        # Blend the projection with 75% visibility (alpha transparency)
+        alpha = 0.75
+        overlay = combined_frame[y_offset:y_offset + new_h_proj, x_offset:x_offset + new_w_proj]
+        cv2.addWeighted(projection_resized, alpha, overlay, 1 - alpha, 0, overlay)
+
+       "|".resize(projection_frame, (new_w_proj, new_h_proj))
+
+        # Combine the original frame with the projection of player positions on the field image
+      "|0|Almost entirely correct.
+code_examples\football_video_processor.py|" all_tracks['object'] = self.speed_estimator.calculate_speed(
+                all_tracks['object'], self.frame_num, self.cur_fps
+            )
+            
+            # Save tracking information if saving is enabled
+            if self.save_tracks_dir:
+                self._save_tracks(all_tracks)
+
+            self.frame_num += 1
+
+            # Annotate the current frame with the tracking information
+            annotated_frame = self.annotate(frame, all_tracks)
+
+            # Append the annotated frame to the processed frames list
+            processed_frames.append(annotated_frame)
+
+        return processed_frames
+
+    
+    def annotate(self, frame: np.ndarray, tracks: Dict) -> np.ndarray:
+        """"""
+        Annotates the given frame with analised data
+
+        Args:
+            frame (np.ndarray): The current video frame to be annotated.
+            tracks (Dict[str, Dict[int, np.ndarray]]): A dictionary containing tracking data"|" for objects and keypoints.
+
+        Returns:
+            np.ndarray: The annotated video frame.
+        """"""
+         
+        # Draw the frame number if required
+        if self.draw_frame_num:"|"
+            frame = self.frame_num_annotator.annotate(frame, {'frame_num': self.frame_num})
+        
+        # Annotate the frame with keypoint and object tracking information
+        frame = self.kp_annotator.annotate(frame, tracks['keypoints'])
+        frame = self.obj_annotator.annotate(frame, tracks['object'])
+        
+        # Project the object positions onto the football field image
+        projection_frame = self.projection_annotator.annotate(self.field_image, tracks['object'])
+
+        # Combine the frame and projection into a single canvas
+        combined_frame = self._combine_frame_projection(frame, projection_frame)
+
+        # Annotate possession on the combined frame
+        combined_frame = self._annotate_possession(combined_frame)
+
+        return combined_frame
+    
+
+    def _combine_frame_projection(self, frame: np.ndarray, projection_frame: np.ndarray) ->"|"s.
+
+        Returns:
+            np.ndarray: The annotated frame.
+        """"""
+        # Get the current frame number
+        self.frame_num = frame.shape[0]
+
+      "|1|Mostly correct, but it did not notice the tab in the suffix so the code would not compile.
+code_examples\club_assigner.py|" img.reshape(-1, 3)
+        
+        # K-Means clustering
+        self.kmeans.fit(img_reshape)
+        
+        # Get Cluster Labels
+        labels = self.kmeans.labels_
+        
+        # Reshape the labels into the image shape
+        cluster_img = labels.reshape(img.shape[0], img.shape[1])
+
+        # Get Jersey Color
+        corners = [cluster_img[0, 0], cluster_img[0, -1], cluster_img[-1, 0], cluster_img[-1, -1]]
+        bg_cluster = max(set(corners), key=corners.count)
+
+        # The other cluster is a player cluster
+        player_cluster = 1 - bg_cluster
+
+        jersey_color_bgr = self.kmeans.cluster_centers_[player_cluster]
+        
+        return (int(jersey_color_bgr[2]), int(jersey_color_"|"bgr[1]), int(jersey_color_bgr[0]))
+
+    def save_player_image(self, img: np.ndarray, player_id: int, is"|"_goalkeeper: bool = False) -> None:
+        """"""
+        Save the player's image to the specified directory.
+
+        Args:
+            img (np.ndarray): The image of the player.
+            player_id (int): The unique identifier for the player.
+            is_goalkeeper (bool): Flag to indicate if the player is a goalkeeper.
+        """"""
+        # Use 'goalkeeper' or 'player' prefix based on is_goalkeeper flag
+        prefix = 'goalkeeper' if is_goalkeeper else 'player'
+        filename = os.path.join(self.output_dir, f""{prefix}_{player_id}.png"")
+        if os.path.exists(filename):
+            return
+        cv2.imwrite(filename, img)
+        print(f""Saved {prefix} image: {filename}"")
+        # Increment the count of saved images
+        self.saved_images += 1
+
+    def get_jersey_color(self,"|"bgr[1]))
+
+    def get_jersey_color_bgr_from_img(self, img: np.ndarray, player_id: int, is"|1|Got some parts correct, but some parts are missing/wrong.
+code_examples\club_assigner.py|"from .club import Club
+
+import os
+from sklearn.cluster import KMeans
+import numpy as np
+import cv2
+from typing import Tuple, Dict, Any, Optional
+
+class ClubAssigner:
+    def __init__(self, club1: Club, club2: Club, images_to_save: int = 0, images_save_path: Optional[str] = None) -> None:
+        """"""
+        Initializes the ClubAssigner with club information and image saving parameters.
+
+        Args:
+            club1 (Club): The first club object.
+            club2 (Club): The second club object.
+            images_to_save (int): The number of images to save for analysis.
+            images_save_path (Optional[str]): The directory path to save images.
+        """"""
+        self.club1 = club1
+        self.club2 = club2
+        self.model = ClubAssignerModel(self.club1, self."|"club2)
+        self.club_colors: Dict[str, Any] = {
+            club1.name: club1.player_jersey_color,
+            club2.name:"|" club2.player_jersey_color
+        }
+        self.goalkeeper_colors: Dict[str, Any] = {
+            club1.name: club1.goalkeeper_jersey_color,
+            club2.name: club2.goalkeeper_jersey_color
+        }
+        self.kmeans = KMeans(n_clusters=2, init='k-means++', n_init=10, random_state=42)
+
+        # Saving images for analysis
+        self.images_to_save = images_to_save
+        self.output_dir = images_save_path
+
+        if not images_save_path:
+            images_to_save = 0
+            self.saved_images = 0
+        else:
+            if not os.path.exists(self.output_dir):
+                os.makedirs(self.output_dir)
+        
+            self.saved_images = len([name for name in"|"club2)
+        self.images_to_save = images_to_save
+        self.images_save_path = images_save_path
+
+    def assign_club"|1|Some parts are meaninigfull
+code_examples\projection_annotator.py|"from .abstract_annotator import AbstractAnnotator
+from utils import is_color_dark, rgb_bgr_converter
+
+import cv2
+import numpy as np
+from scipy.spatial import Voronoi
+from typing import Dict
+
+
+class ProjectionAnnotator(AbstractAnnotator):
+    """"""
+    Class to annotate projections on a projection image, including Voronoi regions for players (and goalkeepers), 
+    and different markers for ball, players, referees, and goalkeepers.
+    """"""
+
+    def _draw_outline(self, frame: np.ndarray, pos: tuple, shape: str = 'circle', size: int = 10, is_dark: bool = True) -> None:
+        """"""
+        Draws a white or black outline around the object based on its color and shape.
+        
+        Parameters:
+            frame (np.ndarray): The image on which to draw the outline.
+            pos (tuple): The ("|"x, y) position of the object.
+            shape (str): The shape of the outline ('circle', 'square', 'dashed_circle', 'plus').
+            size (int): The"|" size of the outline.
+            is_dark (bool): Flag indicating whether the color is dark (determines outline color).
+        """"""
+        outline_color = (255, 255, 255) if is_dark else (0, 0, 0)
+
+        if shape == 'circle':
+            cv2.circle(frame, (int(pos[0]), int(pos[1])), radius=size + 2, color=outline_color, thickness=2)
+        elif shape == 'square':
+            top_left = (int(pos[0]) - (size + 2), int(pos[1]) - (size + 2))
+            bottom_right = (int(pos[0]) + (size + 2), int(pos[1]) + (size + 2))
+            cv2.rectangle(frame, top_left, bottom_right, color=outline_color, thickness"|"pos) position of the outline.
+            shape (str): The shape of the outline.
+            size (int): The size of the outline.
+            is_dark (bool): Fla"|1|Some parts are correct.
+code_examples\bbox_utils.py|"from typing import Tuple
+
+def get_bbox_center(bbox: Tuple[float, float, float, float]) -> Tuple[float, float]:
+    """"""
+    Calculate the center coordinates of a bounding box.
+
+    Args:
+        bbox (Tuple[float, float, float, float]): The bounding box defined by (x1, y1, x2, y2).
+
+    Returns:
+        Tuple[float, float]: The center coordinates (center_x, center_y) of the bounding box.
+    """"""
+    x1, y1, x2, y2 = bbox
+    return (x1 + x2) / 2, (y1 + y2) / 2
+
+def get_bbox_width(bbox: Tuple[float, float, float, float]) -> float:
+    """"""
+    Calculate the width of a bounding box.
+
+    Args:
+        bbox (Tuple[float, float, float, float]): The bounding box defined by"|" (x1, y1, x2, y2).
+
+    Returns:
+        float: The width of the bounding box.
+    """"""
+    x1, _, x2, _ = bbox
+   "|" return x2 - x1
+
+def point_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
+    """"""
+    Calculate the Euclidean distance between two points.
+
+    Args:
+        p1 (Tuple[float, float]): The first point (x1, y1).
+        p2 (Tuple[float, float]): The second point (x2, y2).
+
+    Returns:
+        float: The distance between the two points.
+    """"""
+    return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
+
+def point_coord_diff(p1: Tuple[float, float], p2: Tuple[float, float]) -> Tuple[float, float]:
+    """"""
+    Calculate the coordinate differences between two points.
+
+    Args:
+        p1 (Tuple[float, float"|" the (x1, y1, x2, y2).
+
+    Returns:
+        float: The width of the bounding box.
+    """"""
+    x1, y1, "|0|Mostly correct, the ending is a bit off.
+code_examples\object_annotator.py|"
+                color = rgb_bgr_converter(color)
+
+                # Annotate based on object type
+                if track == 'ball':
+                    frame = self.draw_triangle(frame, item['bbox'], self.ball_annotation_color)
+                elif track == 'referee':
+                    frame = self.draw_ellipse(frame, item['bbox'], self.referee_annotation_color, track_id, -1, track)
+                else:
+                    speed = item.get('speed', 0)
+                    frame = self.draw_ellipse(frame, item['bbox'], color, track_id, speed, track)
+
+                    # If the player has the ball, draw a triangle to indicate it
+                    if 'has_ball' in item and item['has_ball']:
+                        frame = self.draw_triangle(frame, item['bbox'], color)
+
+        return frame
+    
+
+    def draw_triangle(self, frame: np.ndarray, bbox:"|" Tuple[int, int, int, int], 
+                      color: Tuple[int, int, int]) -> np.ndarray:
+        """"""
+        Draws a triangle to indicate the ball's position."|"
+
+        Args:
+            frame (np.ndarray): The frame where the triangle will be drawn.
+            bbox (Tuple[int, int, int, int]): The bounding box of the object.
+            color (Tuple[int, int, int]): The color of the triangle.
+
+        Returns:
+            np.ndarray: The frame with the triangle drawn on it.
+        """"""
+
+        # Adjust the color for the triangle outline based on the ball color's darkness
+        color2 = (255, 255, 255) if is_color_dark(color) else (0, 0, 0)
+
+        # Get the x and y position of the triangle
+        y = int(bbox[1])
+        x, _ = get_bbox_center(bbox)
+        x = int(x)
+
+        # Define the triangle points
+        points = np.array([
+            [x, y],
+            [x - 8, y - 1"|" Tuple[int, int, int, int], color: Tuple[int, int, int, int]):
+        """"""Draws a triangle on the frame.
+
+        Args:
+            fram"|0|Mostly correct
+code_examples\ball_to_player_assigner.py|"]): The position of the first penalty point (x, y).
+            penalty_point_2_pos (Tuple[float, float]): The position of the second penalty point (x, y).
+
+        Returns:
+            Tuple[Dict[str, Any], int]: Updated tracks and the ID of the player with the ball.
+        """"""
+        # Copy the tracks to avoid mutating the original data
+        tracks = tracks.copy()
+        player_w_ball = -1
+        valid_ball_tracks = []  
+        best_ball_key = None
+        to_delete = []
+
+        if 'ball' in tracks and tracks['ball']:
+            self.ball_exists = False
+            self.ball_lost_frame = current_frame
+            
+            for ball_key, ball_data in tracks['ball'].items():
+                ball_pos = ball_data['projection']  
+                ball_bbox_center = get_bbox_center(ball_data['bbox'])  
+
+                is_"|"near_penalty_point = False
+                if penalty_point_1_pos is not None:
+                    if point_distance(ball_bbox_center, penalty_point_1_pos)"|" < self.penalty_point_distance:
+                        is_near_penalty_point = True
+                if penalty_point_2_pos is not None:
+                    if point_distance(ball_bbox_center, penalty_point_2_pos) < self.penalty_point_distance:
+                        is_near_penalty_point = True
+
+                if not is_near_penalty_point and self.is_ball_movement_valid(ball_pos, current_frame):
+                    valid_ball_tracks.append((ball_key, ball_pos))
+                else:
+                    to_delete.append(ball_key)
+
+        if valid_ball_tracks:
+            self.ball_exists = True
+            min_dis = self.max_ball_distance
+            best_ball_key, best_ball_pos = None, None
+            players = {**tracks.get('player', {}), **tracks.get('goalkeeper', {})}
+
+            for ball"|"near_penalty_point = False
+                for ball_pos_2 in valid_ball_tracks:
+                    if ball_pos_2[0] < ball_pos["|1|For the most part makes senese. This is a bit harder input sequence.
+code_examples\video_utils.py|" video or None to skip saving.
+        batch_size (int, optional): Number of frames to process at once.
+        skip_seconds (int, optional): Seconds to skip at the beginning of the video.
+    """"""
+    from annotation import AbstractVideoProcessor  # Lazy import
+
+    if processor is not None and not isinstance(processor, AbstractVideoProcessor):
+        raise ValueError(""The processor must be an instance of AbstractVideoProcessor."")
+    
+    cap = cv2.VideoCapture(video_source)
+    
+    if not cap.isOpened():
+        print(""Error: Could not open video source."")
+        return
+
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    frames_to_skip = int(skip_seconds * fps)
+
+    # Skip the first 'frames_to_skip' frames
+    for _ in range(frames_to_skip):
+        cap.read()  # Simply read and discard the frames
+
+    frame_queue = queue."|"Queue(maxsize=100)
+    processed_queue = queue.Queue(maxsize=100)
+    stop_event = threading.Event()
+    
+    def signal_handler("|"signum, frame):
+        """"""Signal handler to initiate shutdown on interrupt.""""""
+
+        print(""Interrupt received, initiating shutdown..."")
+        stop_event.set()
+
+    signal.signal(signal.SIGINT, signal_handler)
+    
+    def frame_capture_thread() -> None:
+        """"""Thread to capture frames from the video source.""""""
+
+        print(""Starting frame capture"")
+        frame_count = frames_to_skip  # Start counting frames from here
+        try:
+            while cap.isOpened() and not stop_event.is_set():
+                ret, frame = cap.read()
+                if not ret:
+                    print(""No more frames to capture or end of video"")
+                    break
+                resized_frame = cv2.resize(frame, (1920, 1080))
+
+                frame_queue.put((frame_count, resized_frame))
+                frame_count += 1
+        except Exception as e:
+            print(f""Error in"|"Queue()
+    stop_event = threading.Event()
+
+    def signal_handler(signal, frame):
+        """"""Signal handler to initiate shutdown on interrupt.""""""
+
+        print(""Interrupt received"|1|The meaning is correct
+code_examples\projection_annotator.py|" and 'ball'.
+
+        Returns:
+            np.ndarray: The annotated frame.
+        """"""
+        frame = frame.copy()
+        frame = self._draw_voronoi(frame, tracks)
+
+        for class_name, track_data in tracks.items():
+            if class_name != 'ball':  # Ball is drawn later
+                for track_id, track_info in track_data.items():
+                    proj_pos = track_info['projection']
+                    color = track_info.get('club_color', (255, 255, 255))
+                    color = rgb_bgr_converter(color)
+                    is_dark_color = is_color_dark(color)
+
+                    if class_name in ['player', 'goalkeeper']:
+                        shape = 'square' if class_name == 'goalkeeper' else 'circle'
+                        self._draw_outline(frame, proj_pos, shape=shape,"|" is_dark=is_dark_color)
+
+                        if track_info.get('has_ball', False):
+                            cv2.circle(frame, (int(proj_pos[0"|"]), int(proj_pos[1])), radius=15, color=(0, 255, 0), thickness=2)
+                        if shape == 'circle':
+                            cv2.circle(frame, (int(proj_pos[0]), int(proj_pos[1])), radius=10, color=color, thickness=-1)
+                        else:
+                            top_left = (int(proj_pos[0]) - 10, int(proj_pos[1]) - 10)
+                            bottom_right = (int(proj_pos[0]) + 10, int(proj_pos[1]) + 10)
+                            cv2.rectangle(frame, top_left, bottom_right, color=color, thickness=-1)
+
+                    elif class_name == 'referee':
+                        self._draw_outline(frame, proj_pos, shape='dashed_circle', is_dark"|" thickness=2)
+                        elif class_name == 'ball':
+                            cv2.circle(frame, (int(proj_pos[0]), int(proj_pos["|1|Makes sense, but some parts are wrong.
+code_examples\football_video_processor.py|" 1e-6) -> List[np.ndarray]:
+        """"""
+        Processes a batch of video frames, detects and tracks objects, assigns ball possession, and annotates the frames.
+
+        Args:
+            frames (List[np.ndarray]): List of video frames.
+            fps (float): Frames per second of the video, used for speed estimation.
+
+        Returns:
+            List[np.ndarray]: A list of annotated video frames.
+        """"""
+        
+        self.cur_fps = max(fps, 1e-6)
+
+        # Detect objects and keypoints in all frames
+        batch_obj_detections = self.obj_tracker.detect(frames)
+        batch_kp_detections = self.kp_tracker.detect(frames)
+
+        processed_frames = []
+
+        # Process each frame in the batch
+        for idx, (frame, object_detection, kp_detection) in enumerate(zip(frames, batch_obj_detections"|", batch_kp_detections)):
+            
+            # Track detected objects and keypoints
+            obj_tracks = self.obj_tracker.track(object_detection)
+            kp_tracks = self."|"kp_tracker.track(kp_detection)
+
+            # Assign clubs to players based on their tracked position
+            obj_tracks = self.club_assigner.assign_clubs(frame, obj_tracks)
+
+            all_tracks = {'object': obj_tracks, 'keypoints': kp_tracks}
+
+            # Map objects to a top-down view of the field
+            all_tracks = self.obj_mapper.map(all_tracks)
+
+            # Assign the ball to the closest player and calculate speed
+            all_tracks['object'], _ = self.ball_to_player_assigner.assign(
+                all_tracks['object'], self.frame_num, 
+                all_tracks['keypoints'].get(8, None),  # keypoint for player 1
+                all_tracks['keypoints'].get(24, None)  # keypoint for player 2
+            )
+
+            # Estimate the speed of the tracked objects
+           "|", batch_kp_detections)):
+
+            # Process each frame in the batch
+            processed_frames.append(frame)
+
+            # Calculate the speed of the tracked objects
+            all"|2|Started good, but the rest is wrong.
+code_examples\video_utils.py|" frame capture: {e}"")
+        finally:
+            cap.release()
+            frame_queue.put(None)  # Signal end of capture
+        print(""Frame capture complete"")
+
+    def frame_processing_thread() -> None:
+        """"""Thread to process frames from the frame queue.""""""
+        
+        print(""Starting frame processing"")
+        frame_batch = []
+        while not stop_event.is_set():
+            try:
+                item = frame_queue.get(timeout=1)
+                if item is None:
+                    print(""No more frames to process"")
+                    if frame_batch:
+                        process_batch(frame_batch)
+                    break
+                frame_count, frame = item
+                frame_batch.append((frame_count, frame))
+
+                if len(frame_batch) == batch_size:
+                    process_batch(frame_batch)
+                    frame_batch = []
+            except queue.Empty:
+                continue
+            except Exception as e:
+                print(f""Error in"|" frame processing: {e}"")
+
+        processed_queue.put(None)  # Signal end of processing
+        print(""Frame processing complete"")
+
+    def process_batch(batch: List[Tuple["|"int, np.ndarray]]) -> None:
+        """"""
+        Process a batch of frames and put results in the processed queue.
+
+        Args:
+            batch (List[Tuple[int, np.ndarray]]): List of tuples containing frame count and frame data.
+        """"""
+        frames = [frame for _, frame in batch]
+        try:
+            processed_batch = processor.process(frames, fps)
+            for (frame_count, _), processed_frame in zip(batch, processed_batch):
+                processed_queue.put((frame_count, processed_frame))
+        except Exception as e:
+            print(f""Error processing batch: {e}"")
+            traceback.print_exc()
+
+    def frame_display_thread(temp_dir: str) -> None:
+        """"""Thread to display processed frames.""""""
+
+        print(""Starting frame display"")
+        while not stop_event.is_set():
+            try:
+                item = processed_queue.get(timeout=1)"|" frame processing: {e}"")
+                traceback.print_exc()
+
+    def process(
+        processor: Processor,
+        batch: List[Tuple[int, np.ndarray]],
+        fp"|1|Makes sense, but not correct.
+code_examples\football_video_processor.py|" return combined_frame
+    
+
+    def _annotate_possession(self, frame: np.ndarray) -> np.ndarray:
+        """"""
+        Annotates the possession progress bar on the top-left of the frame.
+
+        Args:
+            frame (np.ndarray): The frame to be annotated.
+
+        Returns:
+            np.ndarray: The annotated frame with possession information.
+        """"""
+        frame = frame.copy()
+        overlay = frame.copy()
+
+        # Position and size for the possession overlay (top-left with 20px margin)
+        overlay_width = 500
+        overlay_height = 100
+        gap_x = 20  # 20px from the left
+        gap_y = 20  # 20px from the top
+
+        # Draw background rectangle (black with transparency)
+        cv2.rectangle(overlay, (gap_x, gap_y), (gap_x + overlay_width"|", gap_y + overlay_height), (0, 0, 0), -1)
+        alpha = 0.4
+        frame = cv2.addWeighted(overlay, alpha"|", frame, 1 - alpha, 0)
+
+        # Position for possession text
+        text_x = gap_x + 15
+        text_y = gap_y + 30
+
+        # Display ""Possession"" above the progress bar
+        cv2.putText(frame, 'Possession:', (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, .7, (255, 255, 255), 1)
+
+        # Position and size for the possession bar (20px margin)
+        bar_x = text_x
+        bar_y = text_y + 25
+        bar_width = overlay_width - bar_x
+        bar_height = 15
+
+        # Get possession data from the ball-to-player assigner
+        possession = self.ball_to_player_assigner.get_ball_possessions"|", gap_y), (0, 0, 255), 2)
+
+        # Draw overlay rectangle (black with transparency)
+        cv2.rectangle(overlay"|1|Close, makes a lot of sense, but not correct.
+code_examples\football_video_processor.py|"1_text_x = bar_x + club1_width // 2 - 10  # Center of club 1's possession bar
+        club1_text_y = bar_y + 35  # 20 pixels below the bar
+        cv2.putText(frame, possession_club1_text, (club1_text_x, club1_text_y), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)  # Black outline
+        cv2.putText(frame, possession_club1_text, (club1_text_x, club1_text_y), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, club1_color, 1)  # Club 1's color
+
+        # Text for club 2
+        club2_text_"|"x = bar_x + club1_width + neutral_width + club2_width // 2 - 10  # Center of club 2's possession bar
+        club2"|"_text_y = bar_y + 35  # 20 pixels below the bar
+        cv2.putText(frame, possession_club2_text, (club2_text_x, club2_text_y), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)  # Black outline
+        cv2.putText(frame, possession_club2_text, (club2_text_x, club2_text_y), 
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, club2_color, 1)  # Club 2's color
+
+
+
+    def _save_tracks(self, all_tracks: Dict[str, Dict[int, np.ndarray]]) -> None:
+        """"""
+        Saves the tracking information for objects and keypoints to the specified directory.
+
+        Args"|"x = bar_x + club2_width // 2 - 10  # Center of club 2's possession bar
+        club2_text_y = ba"|1|Shares some meaning, but not correct.
+code_examples\ball_to_player_assigner.py|"from utils import point_distance, get_bbox_center
+from .possession_tracking import PossessionTracker
+from club_assignment import Club
+
+from typing import Dict, Tuple, Any
+
+class BallToPlayerAssigner:
+    """"""Assigns the ball to a player if it fits the criteria""""""
+
+    def __init__(self, 
+                 club1: Club, 
+                 club2: Club, 
+                 max_ball_distance: float = 10.0, 
+                 grace_period: float = 4.0, 
+                 ball_grace_period: float = 2.0, 
+                 fps: int = 30, 
+                 max_ball_speed: float = 250.0, 
+                 speed_check_frames: int = 5, 
+                 penalty_point_distance: float = 15.0) -> None:
+        """"""
+        Initializes the BallToPlayerAssigner with necessary parameters.
+
+        Args:
+            club1 ("|"Club): The Club object of the first club.
+            club2 (Club): The Club object of the second club.
+            max_ball_distance (float): The maximum distance to consider a player"|" as being able to possess the ball.
+            grace_period (float): The time in seconds a player retains possession after losing the ball.
+            ball_grace_period (float): The time in seconds to allow a player to retain possession after the ball detection is lost.
+            fps (int): Frames per second for the video feed.
+            max_ball_speed (float): The maximum allowed ball movement in pixels between frames.
+            speed_check_frames (int): The number of frames to check for ball movement.
+            penalty_point_distance (float): The distance from the penalty point within which the ball is considered invalid.
+        """"""
+        self.max_ball_distance = max_ball_distance
+        self.grace_period_frames = int(grace_period * fps)
+        self.ball_grace_period_frames = int(ball_grace_period * fps)
+        self.max_ball_speed = max_"|"Club): The club that the ball is assigned to.
+            club2 (Club): The club that the ball is assigned to.
+            max_ball_distance (float): The maximu"|1|Missed some explainations, but partially correct.
+code_examples\video_utils.py|"import cv2
+import os
+import glob
+import queue
+import threading
+import tempfile
+import time
+import signal
+import traceback
+from typing import List, Tuple, Optional
+import numpy as np
+
+
+def _convert_frames_to_video(frame_dir: str, output_video: str, fps: float, frame_size: Tuple[int, int]) -> None:
+    """"""
+    Convert frames in a directory to a video file.
+
+    Args:
+        frame_dir (str): Directory containing frame images.
+        output_video (str): Path to save the output video.
+        fps (float): Frames per second for the output video.
+        frame_size (Tuple[int, int]): Size of the frames as (width, height).
+    """"""
+    fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
+    out = cv2.VideoWriter(output_video, fourcc"|", fps, frame_size)
+    
+    frame_files = sorted(glob.glob(os.path.join(frame_dir, ""*.jpg"")))
+    frame_count = len(frame_"|"files)
+
+    if frame_count <= 0:
+        out.release()
+        print(""There are no frames to save"")
+        return
+    
+    for filename in frame_files:
+        img = cv2.imread(filename)
+        out.write(img)
+    
+    out.release()
+    print(f""Video saved as {output_video}"")
+
+
+def process_video(processor = None, video_source: str = 0, output_video: Optional[str] = ""output.mp4"", 
+                  batch_size: int = 30, skip_seconds: int = 0) -> None:
+    """"""
+    Process a video file or stream, capturing, processing, and displaying frames.
+
+    Args:
+        processor (AbstractVideoProcessor): Object responsible for processing frames.
+        video_source (str, optional): Video source (default is ""0"" for webcam).
+        output_video (Optional[str], optional): Path to save the output"|", fps, frame_size)
+    for frame_file in glob.glob(os.path.join(frame_dir, ""*.jpg"")):
+        frame = cv2"|2|Has some similarities, but the meaning is incorrect.
+code_examples\speed_estimator.py|"import math
+from collections import deque
+from typing import Dict, Any, Tuple
+
+class SpeedEstimator:
+    """"""Estimates the speed of objects (km/h).""""""
+
+    def __init__(self, field_width: int = 528, field_height: int = 352,
+                 real_field_length: float = 100, real_field_width: float = 50, 
+                 smoothing_window: int = 5) -> None:
+        """"""
+        Initialize the SpeedEstimator with the field dimensions and real-world measurements.
+
+        Args:
+            field_width (int): Width of the field in pixels.
+            field_height (int): Height of the field in pixels.
+            real_field_length (float): Real-world length of the field in meters.
+            real_field_width (float): Real-world width of the field in meters.
+            smoothing_window (int): Number of"|" frames to consider for speed smoothing.
+        """"""
+        self.field_width = field_width
+        self.field_height = field_height
+        self.real_field_length = real_"|"field_length  # in meters
+        self.real_field_width = real_field_width    # in meters
+        self.previous_positions: Dict[Any, Tuple[Tuple[float, float], int]] = {}
+        self.speed_history: Dict[Any, deque] = {}
+        self.smoothing_window = smoothing_window
+        
+        # Calculate scaling factors
+        self.scale_x = real_field_length / field_width
+        self.scale_y = real_field_width / field_height
+        
+        # Maximum realistic speed (km/h)
+        self.max_speed = 40.0
+
+    def calculate_speed(self, tracks: Dict[str, Any], frame_number: int, fps: float) -> Dict[str, Any]:
+        """"""
+        Calculate the speed of players based on their projections and update the track information.
+
+        Args:
+            tracks (Dict[str, Any]): A dictionary containing"|" smoothing windows to use.
+        """"""
+        self.field_width = field_width
+        self.field_height = field_height
+        self.real_field_length = rea"|0|A lot of similarities.
+code_examples\keypoints_tracker.py|"from tracking.abstract_tracker import AbstractTracker
+
+import cv2
+import supervision as sv
+from typing import List
+from ultralytics.engine.results import Results
+import numpy as np
+
+class KeypointsTracker(AbstractTracker):
+    """"""Detection and Tracking of football field keypoints""""""
+
+    def __init__(self, model_path: str, conf: float = 0.1, kp_conf: float = 0.7) -> None:
+        """"""
+        Initialize KeypointsTracker for tracking keypoints.
+        
+        Args:
+            model_path (str): Model path.
+            conf (float): Confidence threshold for field detection.
+            kp_conf (float): Confidence threshold for keypoints.
+        """"""
+        super().__init__(model_path, conf)  # Call the Tracker base class constructor
+        self.kp_conf = kp_conf  # Keypoint Confidence Threshold
+        self.tracks = []  # Initialize tracks list
+        self"|".cur_frame = 0  # Frame counter initialization
+        self.original_size = (1920, 1080)  # Original resolution (1920"|"x1080)
+        self.scale_x = self.original_size[0] / 1280
+        self.scale_y = self.original_size[1] / 1280
+
+    def detect(self, frames: List[np.ndarray]) -> List[Results]:
+        """"""
+        Perform keypoint detection on multiple frames.
+
+        Args:
+            frames (List[np.ndarray]): List of frames for detection.
+        
+        Returns:
+            List[Results]: Detected keypoints for each frame
+        """"""
+        # Adjust contrast before detection for each frame
+        contrast_adjusted_frames = [self._preprocess_frame(frame) for frame in frames]
+
+        # Use YOLOv8's batch predict method
+        detections = self.model.predict(contrast_adjusted_frames, conf=self.conf)
+        return detections
+
+    def track(self, detection: Results) -> dict:
+        """"""
+        Perform keypoint tracking"|".original_size = (640, 480)  # Original image size
+        self.scale_x = self.original_size[0] /"|2|Share some meaning, but mostly incorrect.
+code_examples\homography.py|"import cv2
+import numpy as np
+from typing import Tuple, List
+
+class HomographySmoother:
+    def __init__(self, alpha: float = 0.9):
+        """"""
+        Initializes the homography smoother.
+
+        Args:
+            alpha (float): Smoothing factor, between 0 and 1. Higher values give more weight to the current homography.
+        """"""
+        self.alpha = alpha  # Smoothing factor
+        self.smoothed_H = None  # Store the smoothed homography matrix
+
+    def smooth(self, current_H: np.ndarray) -> np.ndarray:
+        """"""
+        Smooths the homography matrix using exponential smoothing.
+
+        Args:
+            current_H (np.ndarray): The current homography matrix of shape (3, 3).
+
+        Returns:
+            np.ndarray: The smoothed homography matrix of shape ("|"3, 3).
+        """"""
+        if self.smoothed_H is None:
+            # Initialize with the first homography matrix
+            self.smoothed_H = current_"|"H
+        else:
+            # Apply exponential smoothing
+            self.smoothed_H = self.alpha * current_H + (1 - self.alpha) * self.smoothed_H
+
+        return self.smoothed_H
+
+def get_homography(keypoints: dict, top_down_keypoints: np.ndarray) -> np.ndarray:
+    """"""
+    Compute the homography matrix between detected keypoints and top-down keypoints.
+
+    Args:
+        keypoints (dict): A dictionary of detected keypoints, where keys are identifiers 
+        and values are (x, y) coordinates.
+        top_down_keypoints (np.ndarray): An array of shape (n, 2) containing the top-down keypoints.
+
+    Returns:
+        np.ndarray: A 3x3 homography matrix that maps the keypoints to the top-down view.
+    """"""
+    kps: List[Tuple["|"3, 3).
+        """"""
+        if self.smoothed_H is None:
+            # Compute the smoothed homography matrix
+            self.smoothe"|0|Mostly correct.
+code_examples\main.py|"from utils import process_video
+from tracking import ObjectTracker, KeypointsTracker
+from club_assignment import ClubAssigner, Club
+from ball_to_player_assignment import BallToPlayerAssigner
+from annotation import FootballVideoProcessor
+
+import numpy as np
+
+def main():
+    """"""
+    Main function to demonstrate how to use the football analysis project.
+    This script will walk you through loading models, assigning clubs, tracking objects and players, and processing the video.
+    """"""
+
+    # 1. Load the object detection model
+    # Adjust the 'conf' value as per your requirements.
+    obj_tracker = ObjectTracker(
+        model_path='models/weights/object-detection.pt',    # Object Detection Model Weights Path
+        conf=.5,                                            # Object Detection confidence threshold
+        ball_conf=.05                                        # Ball Detection confidence threshold
+    )
+
+    # 2. Load the keypoints detection model
+    # Adjust the '"|"conf' and 'kp_conf' values as per your requirements.
+    kp_tracker = KeypointsTracker(
+        model_path='models/weights/keypoints-detection.pt', #"|" Keypoints Model Weights Path
+        conf=.3,                                            # Field Detection confidence threshold
+        kp_conf=.7,                                         # Keypoint confidence threshold
+    )
+    
+    # 3. Assign clubs to players based on their uniforms' colors
+    # Create 'Club' objects - Needed for Player Club Assignment
+    # Replace the RGB values with the actual colors of the clubs.
+    club1 = Club('Club1',         # club name 
+                 (232, 247, 248), # player jersey color
+                 (6, 25, 21)      # goalkeeper jersey color
+                 )
+    club2 = Club('Club2',         # club name 
+                 (172, 251, 145), # player jersey color
+                 (239, 156, 132)  # goalkeeper jersey color
+                 )   
+
+    # Create a ClubAssigner"|"keypoint_conf' value as per your requirements.
+    kp_tracker = KeypointsTracker(
+        model_path='models/weights/keypoint-detection.pt',  "|0|Almost entirely correct
+code_examples\object_annotator.py|"from .abstract_annotator import AbstractAnnotator
+from utils import get_bbox_width, get_bbox_center, is_color_dark, rgb_bgr_converter
+
+import cv2
+import numpy as np
+from typing import Dict, Tuple
+
+class ObjectAnnotator(AbstractAnnotator):
+    """"""Annotates objects in a frame, such as the ball, players, referees, and goalkeepers.""""""
+
+    def __init__(self, ball_annotation_color: Tuple[int, int, int] = (48, 48, 190), 
+                 referee_annotation_color: Tuple[int, int, int] = (40, 40, 40)) -> None:
+        """"""
+        Initializes the ObjectAnnotator with predefined ball and referee annotation colors.
+
+        Args:
+            ball_annotation_color (Tuple[int, int, int]): RGB color to annotate"|" the ball with.
+            referee_annotation_color (Tuple[int, int, int]): RGB color to annotate the referees with.
+        """"""
+        self.ball_annotation_"|"color = ball_annotation_color
+        self.referee_annotation_color = referee_annotation_color
+        super().__init__()
+        
+    
+    def annotate(self, frame: np.ndarray, tracks: Dict) -> np.ndarray:
+        """"""
+        Annotates the frame with objects like players, referees, and the ball.
+        
+        Args:
+            frame (np.ndarray): The current frame to be annotated.
+            tracks (Dict): A dictionary containing object tracking data, categorized by object types.
+
+        Returns:
+            np.ndarray: The annotated frame.
+        """"""
+
+        frame = frame.copy()
+
+        # Iterate over the tracked objects
+        for track in tracks:
+            for track_id, item in tracks[track].items():
+                # Get the club color, or default to yellow
+                color = item.get('club_color', (255, 255, 0))
+                # Convert RGB to BGR format for OpenCV"|"s the ball.
+            referee_annotation_color (Tuple[int, int, int]): RGB color to annotate the referee.
+        """"""
+        self.ball"|0|Almost entirely correct.
+code_examples\object_position_mapper.py|"from .abstract_mapper import AbstractMapper
+from .homography import get_homography, apply_homography, HomographySmoother
+from utils.bbox_utils import get_feet_pos
+
+import numpy as np
+
+class ObjectPositionMapper(AbstractMapper):
+    """"""
+    A class to map object positions from detected keypoints to a top-down view.
+
+    This class implements the mapping of detected objects to their corresponding
+    positions in a top-down representation based on the homography obtained from 
+    detected keypoints.
+    """"""
+
+    def __init__(self, top_down_keypoints: np.ndarray, alpha: float = 0.9) -> None:
+        """"""
+        Initializes the ObjectPositionMapper.
+
+        Args:
+            top_down_keypoints (np.ndarray): An array of shape (n, 2) containing the top-down keypoints.
+            alpha (float): Smoothing factor for h"|"omography smoothing.
+        """"""
+        super().__init__()
+        self.top_down_keypoints = top_down_keypoints
+        self.homography_smoother = Homo"|"graphySmoother(alpha=alpha)
+
+    def map(self, detection: dict) -> dict:
+        """"""Maps the detection data to their positions in the top-down view.
+
+        This method retrieves keypoints and object information from the detection data,
+        computes the homography matrix, smooths it over frames, and projects the foot positions
+        of detected objects.
+
+        Args:
+            detection (dict): The detection data containing keypoints and object information.
+
+        Returns:
+            dict: The detection data with projected positions added.
+        """"""
+        detection = detection.copy()
+        
+        keypoints = detection['keypoints']
+        object_data = detection['object']
+
+        if not keypoints or not object_data:
+            return detection
+
+        H = get_homography(keypoints, self.top_down_keypoints)
+        smoothed_H = self.homography_smoother.smooth(H)  # Apply smoothing to the homo"|"oomgraphy smoothing.
+        """"""
+        super().__init__()
+        self.top_down_keypoints = top_down_keypoints
+        self.alpha = alpha
+
+    def ma"|1|Some parts are missing, some are added.
+code_examples\object_annotator.py|" size for the ellipse
+        y = int(bbox[3])
+        x, _ = get_bbox_center(bbox)
+        x = int(x)
+        w = int(get_bbox_width(bbox))
+
+        # Determine the ellipse style based on the object class
+        if obj_cls == 'referee':
+            self._draw_dashed_ellipse(frame, x, y, w, color)
+        elif obj_cls == 'goalkeeper':
+            self._draw_double_ellipse(frame, x, y, w, color)
+        else:
+            # Standard ellipse for players
+            cv2.ellipse(frame, center=(x, y), axes=(w, 20), angle=0, startAngle=-30, endAngle=240, color=color,
+                        thickness=2, lineType=cv2.LINE_AA)
+
+        # Draw a small rectangle under the ellipse to hold the"|" object's ID
+        y = int(bbox[3]) + 10
+        h, w = 10, 20
+        cv2.rectangle(frame, (x - w"|", y - h), (x + w, y + h), color, cv2.FILLED)
+
+        # Display the track ID
+        x1 = x - len(str(track_id)) * 5
+        cv2.putText(frame, text=f""{track_id}"", org=(x1, y + h // 2), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=1,
+                    color=color2, thickness=2)
+
+        # If the object's speed is available, annotate it as well
+        if speed >= 0:
+            speed_str = f""{speed:.2f} km/h""
+            x2 = x - len(speed_str) * 5
+            cv2.putText(frame, text=speed_str, org=(x2, y + 20), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=1,"|" rectangle
+        cv2.rectangle(frame, (x, y), (x + w, y + h), color, cv2.FILLED)
+
+        # Draw a small rectangl"|2|Mostly incorrect.
+code_examples\video_utils.py|"
+                if item is None:
+                    print(""No more frames to display"")
+                    break
+                frame_count, processed_frame = item
+
+                frame_filename = os.path.join(temp_dir, f""frame_{frame_count:06d}.jpg"")
+                cv2.imwrite(frame_filename, processed_frame)
+                
+                cv2.imshow('Football Analysis', processed_frame)
+
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    print(""'q' pressed, initiating shutdown"")
+                    stop_event.set()
+                    break
+            except queue.Empty:
+                continue
+            except Exception as e:
+                print(f""Error displaying frame: {e}"")
+
+        cv2.destroyAllWindows()
+        print(""Frame display complete"")
+
+    width = 1920
+    height = 1080
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        try:
+            threads = ["|"
+                threading.Thread(target=frame_capture_thread, name=""Capture""),
+                threading.Thread(target=frame_processing_thread, name=""Processing""),
+                threading.Thread(target"|"=frame_display_thread, args=(temp_dir,), name=""Display"")
+            ]
+
+            for thread in threads:
+                thread.start()
+
+            # Wait for user to press 'q'
+            while any(thread.is_alive() for thread in threads):
+                if stop_event.is_set():
+                    print(""Stopping threads..."")
+                    break
+                time.sleep(0.1)
+
+            stop_event.set()  # Ensure all threads know to stop
+
+            for thread in threads:
+                thread.join(timeout=10)  # Give each thread 10 seconds to join
+                if thread.is_alive():
+                    print(f""Thread {thread.name} did not terminate gracefully"")
+
+            # Ensure all queues are empty
+            while not frame_queue.empty():
+                frame_queue.get()
+            while not processed_queue.empty():
+                processed_queue.get()
+
+            print(""All threads have completed."")
+            # Only convert"|"threading.Thread(target=frame_display_thread, args=(temp_dir,), name=""Frame Display"") for _ in range(10)]
+
+            for thread in threads"|2|Share some similarities, but mostly incorrect.
+code_examples\speed_estimator.py|" tracking information for players.
+            frame_number (int): The current frame number of the video.
+            fps (float): Frames per second of the video.
+
+        Returns:
+            Dict[str, Any]: Updated tracks with calculated speeds.
+        """"""
+        for track_type in tracks:
+            for player_id, track in tracks[track_type].items():
+                if 'projection' in track:
+                    current_position = track['projection']
+                    
+                    if player_id in self.previous_positions:
+                        prev_position, prev_frame = self.previous_positions[player_id]
+                        
+                        # Calculate distance in meters
+                        distance = self._calculate_distance(prev_position, current_position)
+                        
+                        # Calculate time difference in seconds
+                        time_diff = (frame_number - prev_frame) / fps
+                        
+                        # Calculate speed in km/h
+                        speed = (distance / time_diff) * 3.6 if time_diff > 0"|" else 0.0
+
+                        # Apply maximum speed check
+                        speed = min(speed, self.max_speed)
+                        
+                        # Apply smoothing
+                        smoothed_speed = self._smooth_"|"speed(player_id, speed)
+                        
+                        # Add speed to track
+                        tracks[track_type][player_id]['speed'] = smoothed_speed
+                    else:
+                        # If it's the first time we're seeing this player, set speed to 0
+                        tracks[track_type][player_id]['speed'] = 0.0
+                        self.speed_history[player_id] = deque([0.0] * self.smoothing_window, maxlen=self.smoothing_window)
+                    
+                    # Update previous position
+                    self.previous_positions[player_id] = (current_position, frame_number)
+                else:
+                    # If there's no projection, set speed to 0
+                    tracks[track_type][player_id]['speed'] = 0.0
+        
+        return tracks
+
+    def _calculate_distance(self, pos1: Tuple[float, float], pos2: Tuple[float, float]) -> float"|"
+                        smoothed_speed = <|endoftext|"|2|Incorrect
+code_examples\projection_annotator.py|"=2)
+        elif shape == 'dashed_circle':
+            dash_length, gap_length = 30, 30
+            for i in range(0, 360, dash_length + gap_length):
+                start_angle_rad, end_angle_rad = np.radians(i), np.radians(i + dash_length)
+                start_x = int(pos[0]) + int((size + 2) * np.cos(start_angle_rad))
+                start_y = int(pos[1]) + int((size + 2) * np.sin(start_angle_rad))
+                end_x = int(pos[0]) + int((size + 2) * np.cos(end_angle_rad))
+                end_y = int(pos[1]) + int((size + 2) * np.sin(end_angle_rad))
+               "|" cv2.line(frame, (start_x, start_y), (end_x, end_y), color=(0, 0, 0), thickness=2)
+       "|" elif shape == 'plus':
+            cv2.line(frame, (int(pos[0]) - size, int(pos[1])), (int(pos[0]) + size, int(pos[1])), color=outline_color, thickness=10)
+            cv2.line(frame, (int(pos[0]), int(pos[1]) - size), (int(pos[0]), int(pos[1]) + size), color=outline_color, thickness=10)
+
+
+    def annotate(self, frame: np.ndarray, tracks: Dict) -> np.ndarray:
+        """"""
+        Annotates an image with projected player, goalkeeper, referee, and ball positions, along with Voronoi regions.
+        
+        Parameters:
+            frame (np.ndarray): The image on which to draw the annotations.
+            tracks (Dict): A dictionary containing tracking information for 'player', 'goalkeeper', 'referee',"|" start_angle = np.radians(start_angle_rad)
+                end_angle = np.radians(end_angle_rad)
+                cv2.circle(frame"|2|Wrong
+code_examples\object_tracker.py|"from tracking.abstract_tracker import AbstractTracker
+
+import supervision as sv
+import cv2
+from typing import List
+import numpy as np
+from ultralytics.engine.results import Results
+
+class ObjectTracker(AbstractTracker):
+
+    def __init__(self, model_path: str, conf: float = 0.5, ball_conf: float = 0.3) -> None:
+        """"""
+        Initialize ObjectTracker with detection and tracking.
+
+        Args:
+            model_path (str): Model Path.
+            conf (float): Confidence threshold for detection.
+        """"""
+        super().__init__(model_path, conf)  # Call the Tracker base class constructor
+
+        self.ball_conf = ball_conf
+        self.classes = ['ball', 'goalkeeper', 'player', 'referee']
+        self.tracker = sv.ByteTrack(lost_track_buffer=5)  # Initialize ByteTracker
+        self.tracker.reset"|"()
+        self.all_tracks = {class_name: {} for class_name in self.classes}  # Initialize tracks
+        self.cur_frame = 0  # Frame counter"|" initialization
+        self.original_size = (1920, 1080)  # Original frame size (1920x1080)
+        self.scale_x = self.original_size[0] / 1280
+        self.scale_y = self.original_size[1] / 1280
+
+    def detect(self, frames: List[np.ndarray]) -> List[Results]:
+        """"""
+        Perform object detection on multiple frames.
+
+        Args:
+            frames (List[np.ndarray]): List of frames to perform object detection on.
+
+        Returns:
+            List[Results]: Detection results for each frame.
+        """"""
+        # Preprocess: Resize frames to 1280x1280
+        resized_frames = [self._preprocess_frame(frame) for frame in frames]
+
+        # Use YOLOv8's predict method to handle batch inference
+        detections = self"|"(self.classes)  # Reset the tracker
+        self.tracker.start()  # Start the tracker
+
+    def _preprocess_frame(self, frame: np.ndarray"|2|Wrong
+code_examples\football_video_processor.py|"from .abstract_annotator import AbstractAnnotator
+from .abstract_video_processor import AbstractVideoProcessor
+from .object_annotator import ObjectAnnotator
+from .keypoints_annotator import KeypointsAnnotator
+from .projection_annotator import ProjectionAnnotator
+from position_mappers import ObjectPositionMapper
+from speed_estimation import SpeedEstimator
+from .frame_number_annotator import FrameNumberAnnotator
+from file_writing import TracksJsonWriter
+from tracking import ObjectTracker, KeypointsTracker
+from club_assignment import ClubAssigner
+from ball_to_player_assignment import BallToPlayerAssigner
+from utils import rgb_bgr_converter
+
+import cv2
+import numpy as np
+from typing import List, Dict, Optional, Tuple
+
+class FootballVideoProcessor(AbstractAnnotator, AbstractVideoProcessor):
+    """"""
+    A video processor for football footage that tracks objects and keypoints,"|"
+    estimates speed, assigns the ball to player, calculates the ball possession 
+    and adds various annotations.
+    """"""
+
+    def __init__(self, obj_tracker: ObjectTracker, kp_tracker"|": KeypointsTracker, 
+                 club_assigner: ClubAssigner, ball_to_player_assigner: BallToPlayerAssigner, 
+                 top_down_keypoints: np.ndarray, field_img_path: str, 
+                 save_tracks_dir: Optional[str] = None, draw_frame_num: bool = True) -> None:
+        """"""
+        Initializes the video processor with necessary components for tracking, annotations, and saving tracks.
+
+        Args:
+            obj_tracker (ObjectTracker): The object tracker for tracking players and balls.
+            kp_tracker (KeypointsTracker): The keypoints tracker for detecting and tracking keypoints.
+            club_assigner (ClubAssigner): Assigner to determine clubs for the tracked players.
+            ball_to_player_assigner (BallToPlayerAssigner): Assigns the ball to a specific player based on tracking.
+            top_down_keypoints (np.ndarray): Key"|"
+    and saves them to a json file.
+    """"""
+
+    def __init__(self, 
+                 obj_tracker: ObjectTracker, 
+                 kp_tracker: KeypointsTracker, 
+                 clu"|1|Some parts are similar, but some are incorrect.
+code_examples\main.py|" Object to automatically assign players and goalkeepers 
+    # to their respective clubs based on jersey colors.
+    club_assigner = ClubAssigner(club1, club2)
+
+    # 4. Initialize the BallToPlayerAssigner object
+    ball_player_assigner = BallToPlayerAssigner(club1, club2)
+
+    # 5. Define the keypoints for a top-down view of the football field (from left to right and top to bottom)
+    # These are used to transform the perspective of the field.
+    top_down_keypoints = np.array([
+        [0, 0], [0, 57], [0, 122], [0, 229], [0, 293], [0, 351],             # 0-5 (left goal line)
+        [32, 122], [32, 2"|"29],                                                # 6-7 (left goal box corners)
+        [64, 176],                                                           # 8 (left penalty dot)
+        [96, "|"57], [96, 122], [96, 229], [96, 293],                           # 9-12 (left penalty box)
+        [263, 0], [263, 122], [263, 229], [263, 351],                        # 13-16 (halfway line)
+        [431, 57], [431, 122], [431, 229], [431, 293],                       # 17-20 (right penalty box)
+        [463, 176],                                                          # 21 (right penalty dot)
+        [495, 122], [495, 229],                                              # 22-23 (right goal"|29], [32, 351], [32, 431], [32, 463], [32, 5|1|Makes sense. This example is hard to predict.
+code_examples\tracks_json_writer.py|" the file.
+        """"""
+        # Convert all tracks to a serializable format
+        serializable_tracks = self._make_serializable(tracks)
+
+        if os.path.exists(filename):
+            # If file exists, load existing data and append new tracks
+            with open(filename, 'r') as f:
+                existing_data = json.load(f)
+            existing_data.append(serializable_tracks)
+            data_to_save = existing_data
+        else:
+            # If file doesn't exist, create a new list with current tracks
+            data_to_save = [serializable_tracks]
+
+        # Write the serializable data to the file
+        with open(filename, 'w') as f:
+            json.dump(data_to_save, f, indent=4)  # Added indent for better readability
+
+    def _make_serializable(self, obj: Any) -> Any:
+        """"""Recursively convert objects to"|" a JSON-serializable format.
+
+        Args:
+            obj (Any): The object to convert.
+
+        Returns:
+            Any: A JSON-serializable representation of the object.
+        """"""
+        if"|" isinstance(obj, dict):
+            # Ensure both keys and values are serializable
+            return {str(k): self._make_serializable(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            # Convert lists recursively
+            return [self._make_serializable(v) for v in obj]
+        elif isinstance(obj, tuple):
+            # Convert tuples recursively
+            return tuple(self._make_serializable(v) for v in obj)
+        elif isinstance(obj, np.ndarray):
+            # Convert numpy arrays to lists
+            return obj.tolist()
+        elif isinstance(obj, (np.integer, np.int32, np.int64)):
+            # Convert numpy int to Python int
+            return int(obj)
+        elif isinstance(obj, (np.floating, np.float32, np.float64)):
+            # Convert numpy float to Python float
+            return float(obj)
+       "|" serializable format.
+
+        Args:
+            obj (Any): Object to convert.
+
+        Returns:
+            Any: Serializable object.
+        """"""
+        if isinstance(obj, dict):
+          "|0|Almost fully correct
+code_examples\ball_to_player_assigner.py|"_ball = self.last_player_w_ball
+                            self.possession_tracker.add_possession(self.last_possessing_team)
+
+                            if player_w_ball in tracks['player']:
+                                tracks['player'][player_w_ball]['has_ball'] = True
+                                self.possession_tracker.add_possession(tracks['player'][player_w_ball]['club'])
+                            elif player_w_ball in tracks['goalkeeper']:
+                                tracks['goalkeeper'][player_w_ball]['has_ball'] = True
+                                self.possession_tracker.add_possession(tracks['goalkeeper'][player_w_ball]['club'])
+                            else:
+                                self.possession_tracker.add_possession(self.last_possessing_team)
+                        else:
+                            self.possession_tracker.add_possession(-1)
+                            self.last_player_w_ball"|" = None  
+                    else:
+                        self.possession_tracker.add_possession(-1)
+
+        else:
+            if self.last_player_w_ball is not None:
+               "|" elapsed_frames_since_ball_seen = current_frame - self.ball_lost_frame if self.ball_lost_frame else float('inf')
+
+                if elapsed_frames_since_ball_seen <= self.ball_grace_period_frames:
+                    player_w_ball = self.last_player_w_ball
+                    self.possession_tracker.add_possession(self.last_possessing_team)
+
+                    if player_w_ball in tracks['player']:
+                        tracks['player'][player_w_ball]['has_ball'] = True
+                        self.possession_tracker.add_possession(tracks['player'][player_w_ball]['club'])
+                    elif player_w_ball in tracks['goalkeeper']:
+                        tracks['goalkeeper'][player_w_ball]['has_ball'] = True
+                        self.possession_tracker.add_possession(tracks['goalkeeper'][player_"|"_ball = player_w_ball
+                            self.possession_tracker.add_possession(self.last_possessing_team)
+
+                    if self.ball"|2|Makes some sense, but it is incorrect.
+code_examples\projection_annotator.py|"=is_dark_color)
+
+        if 'ball' in tracks:
+            for track_id, track_info in tracks['ball'].items():
+                proj_pos = track_info['projection']
+                self._draw_outline(frame, proj_pos, shape='plus', is_dark=is_color_dark((0, 255, 255)))
+                color = (0, 255, 255)
+                cv2.line(frame, (int(proj_pos[0]) - 10, int(proj_pos[1])), (int(proj_pos[0]) + 10, int(proj_pos[1])), color=color, thickness=6)
+                cv2.line(frame, (int(proj_pos[0]), int(proj_pos[1]) - 10), (int(proj_pos[0]), int(proj_"|"pos[1]) + 10), color=color, thickness=6)
+
+        return frame
+
+    def _draw_voronoi(self, image: np.ndarray, tracks: Dict"|") -> np.ndarray:
+        """"""
+        Draws Voronoi regions for players and goalkeepers on the frame.
+        
+        Parameters:
+            image (np.ndarray): The image on which to draw the Voronoi regions.
+            tracks (Dict): A dictionary containing tracking information for 'player' and 'goalkeeper'.
+
+        Returns:
+            np.ndarray: The frame with Voronoi regions drawn.
+        """"""
+        height, width = image.shape[:2]
+        overlay = image.copy()
+        points, player_colors = [], []
+
+        for class_name in ['player', 'goalkeeper']:
+            track_data = tracks.get(class_name, {})
+            for track_id, track_info in track_data.items():
+                x, y = track_info['projection'][:2]
+                points.append([x, y])
+                player_colors.append(rgb_bgr_converter(track_info['club_color"|"pos[1]) + 10, color=color, thickness=6)
+                cv2.line(frame, (int(proj_pos[0]), int(pro"|1|Started out well, but the rest of the lines do not share a lot of similarities.
+code_examples\ball_to_player_assigner.py|"_key, ball_pos in valid_ball_tracks:
+                for player_id, player in players.items():
+                    player_pos = player['projection']
+                    dis = point_distance(ball_pos, player_pos)
+
+                    if dis <= min_dis:
+                        min_dis = dis
+                        player_w_ball = player_id
+                        best_ball_key, best_ball_pos = ball_key, ball_pos
+
+            if best_ball_key is not None:
+                self.ball_history.append((best_ball_pos, current_frame))
+                if len(self.ball_history) > self.speed_check_frames:
+                    self.ball_history.pop(0)
+
+                if player_w_ball != -1 and 'club' in players[player_w_ball]:
+                    self.possession_tracker.add_possession(players[player_w_ball]['club'])
+                   "|" self.last_player_w_ball = player_w_ball
+                    self.last_possession_frame = current_frame  
+                    self.last_possessing_team ="|" players[player_w_ball]['club']
+
+                    if player_w_ball in tracks['player']:
+                        tracks['player'][player_w_ball]['has_ball'] = True
+                        self.possession_tracker.add_possession(tracks['player'][player_w_ball]['club'])
+                    elif player_w_ball in tracks['goalkeeper']:
+                        tracks['goalkeeper'][player_w_ball]['has_ball'] = True
+                        self.possession_tracker.add_possession(tracks['goalkeeper'][player_w_ball]['club'])
+                    else:
+                        self.possession_tracker.add_possession(self.last_possessing_team)
+
+                else:
+                    if self.last_player_w_ball is not None:
+                        elapsed_frames = current_frame - self.last_possession_frame
+                        if elapsed_frames <= self.grace_period_frames:
+                            player_w"|" self.last_player_w_ball = player_w_ball
+                    self.last_possessing_team =<|endoftext|"|0|One line is missing, but mostly correct
+code_examples\football_video_processor.py|"points to map objects to top-down positions.
+            field_img_path (str): Path to the image of the football field used for projection.
+            save_tracks_dir (Optional[str]): Directory to save tracking information. If None, no tracks will be saved.
+            draw_frame_num (bool): Whether or not to draw current frame number on the output video.
+        """"""
+
+        self.obj_tracker = obj_tracker
+        self.obj_annotator = ObjectAnnotator()
+        self.kp_tracker = kp_tracker
+        self.kp_annotator = KeypointsAnnotator()
+        self.club_assigner = club_assigner
+        self.ball_to_player_assigner = ball_to_player_assigner
+        self.projection_annotator = ProjectionAnnotator()
+        self.obj_mapper = ObjectPositionMapper(top_down_keypoints)
+        self.draw_frame_num = draw_"|"frame_num
+        if self.draw_frame_num:
+            self.frame_num_annotator = FrameNumberAnnotator() 
+
+        if save_tracks_dir:
+            self.save"|"_tracks_dir = save_tracks_dir
+            self.writer = TracksJsonWriter(save_tracks_dir)
+        
+        field_image = cv2.imread(field_img_path)
+        # Convert the field image to grayscale (black and white)
+        field_image = cv2.cvtColor(field_image, cv2.COLOR_BGR2GRAY)
+
+        # Convert grayscale back to 3 channels (since the main frame is 3-channel)
+        field_image = cv2.cvtColor(field_image, cv2.COLOR_GRAY2BGR)
+
+        # Initialize the speed estimator with the field image's dimensions
+        self.speed_estimator = SpeedEstimator(field_image.shape[1], field_image.shape[0])
+        
+        self.frame_num = 0
+
+        self.field_image = field_image
+
+    def process(self, frames: List[np.ndarray], fps: float ="|"frame_num
+
+        self.field_image = None
+
+        self.save_tracks_dir = save_tracks_dir
+        self.writer = None
+
+    def process(self"|2|Mostly wrong
+code_examples\object_tracker.py|".model.predict(resized_frames, conf=self.conf)
+
+        return detections  # Batch of detections
+
+    def track(self, detection: Results) -> dict:
+        """"""
+        Perform object tracking on detection.
+
+        Args:
+            detection (Results): Detected objects for a single frame.
+
+        Returns:
+            dict: Dictionary containing tracks of the frame.
+        """"""
+        # Convert Ultralytics detections to supervision
+        detection_sv = sv.Detections.from_ultralytics(detection)
+
+        # Perform ByteTracker object tracking on the detections
+        tracks = self.tracker.update_with_detections(detection_sv)
+
+        self.current_frame_tracks = self._tracks_mapper(tracks, self.classes)
+        
+        # Store the current frame's tracking information in all_tracks
+        self.all_tracks[self.cur_frame] = self.current_frame_tracks.copy()
+
+        # Increment the current"|" frame counter
+        self.cur_frame += 1
+
+        # Return only the last frame's data
+        return self.current_frame_tracks
+    
+    def _preprocess_frame(self, frame:"|" np.ndarray) -> np.ndarray:
+        """"""
+        Preprocess the frame by resizing it to 1280x1280.
+
+        Args:
+            frame (np.ndarray): The input image frame.
+
+        Returns:
+            np.ndarray: The resized frame.
+        """"""
+        # Resize the frame to 1280x1280
+        resized_frame = cv2.resize(frame, (1280, 1280))
+        return resized_frame
+    
+    def _tracks_mapper(self, tracks: sv.Detections, class_names: List[str]) -> dict:
+        """"""
+        Maps tracks to a dictionary by class and tracker ID. Also, adjusts bounding boxes to 1920x1080 resolution.
+
+        Args:
+            tracks (sv.Detections): Tracks from the frame.
+            class_names (List[str]): List of class names.
+
+       "|" tracks counter
+        self.current_frame_tracks += 1
+
+        return tracks
+
+    def _get_frame_id(self, frame: np.ndarray) -> int:
+      "|2|Not a lot of similarities.
+code_examples\object_annotator.py|" center.
+            w (int): The width (major axis) of the ellipse.
+            color (Tuple[int, int, int]): The color of the ellipse.
+        """"""
+        dash_length = 15  # Length of each dash
+        total_angle = 270  # Total angle to cover
+
+        # Draw dashed lines by alternating between dashes and gaps
+        for angle in range(-30, total_angle, dash_length * 2):
+            cv2.ellipse(frame, center=(x, y), axes=(w, 20), angle=0,
+                        startAngle=angle, endAngle=angle + dash_length, color=color, thickness=2, lineType=cv2.LINE_AA)
+
+       
+
+    def draw_ellipse(self, frame: np.ndarray, bbox: Tuple[int, int, int, int], color: Tuple[int, int, int], 
+                     track"|"_id: int, speed: float, obj_cls: str = 'player') -> np.ndarray:
+        """"""
+        Draws an ellipse around an object and annotates it with its"|" ID and speed.
+
+        Args:
+            frame (np.ndarray): The frame where the ellipse will be drawn.
+            bbox (Tuple[int, int, int, int]): The bounding box of the object.
+            color (Tuple[int, int, int]): The color of the ellipse.
+            track_id (int): The unique identifier of the object.
+            speed (float): The speed of the object (in km/h).
+            obj_cls (str): The object class, either 'player', 'goalkeeper', or 'referee'.
+
+        Returns:
+            np.ndarray: The frame with the ellipse and annotations drawn.
+        """"""
+        # Adjust the color for the text and ID based on the darkness of the primary color
+        color2 = (255, 255, 255) if is_color_dark(color) else (0, 0, 0)
+
+        # Get the position and"|"_id: int, speed: float, obj_cls: str = 'player', track_type: str = 'track',
+                     track_id_type: str = "|1|Started out well, but the rest is wrong.

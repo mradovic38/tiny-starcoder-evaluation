@@ -74,7 +74,7 @@ class SplitGenerator():
         return splits
 
 
-    def generate(self,  save_path: str, num_examples: int = 40) -> None:
+    def generate(self,  save_path: str, num_examples: int = 40, random_seed: int = None) -> None:
         """Generate a dataset of code completion examples from Python files.
 
         Args:
@@ -99,6 +99,8 @@ class SplitGenerator():
             print("No examples were generated.")
             return
 
+        if random_seed:
+            random.seed(random_seed)
         data_cut = random.sample(dataset, min(num_examples, len(dataset)))
 
         if os.path.exists(save_path):
