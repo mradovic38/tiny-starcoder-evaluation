@@ -2,5 +2,6 @@
 __pycache__
 dataset
 code_examples
+reviewed_data.csv
 repo
 .vscode

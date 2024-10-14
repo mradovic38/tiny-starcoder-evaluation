@@ -1,10 +1,10 @@
 # Tiny Starcoder FIM Code Completion Model Evaluation
 
 ## [Generating the dataset](data_fetcher.py)
-To generate the dataset, I first cloned the public repository of my [Football Analysis]("https://github.com/mradovic38/football_analysis") project using the `clone_repo()` function. This function clones the repository into a specified directory, ensuring the code is available locally. After cloning, I used the `collect_python_files()` function to gather all Python files (except `__init__.py` files) from the repository into a target directory. This function recursively searches for .py files and stores them in a designated folder for further processing. I applied this process to gather all Python files from the cloned repository.
+To generate the dataset, I first cloned the public repository of my [Football Analysis]("https://github.com/mradovic38/football_analysis") project using the `clone_repo()` function. This function clones the repository into a specified directory, ensuring the code is available locally. After cloning, I used the `collect_python_files()` function to gather all Python files (except `__init__.py` files) from the repository into a target directory. This function searches for .py files and stores them in a designated folder for further processing. I applied this process to gather all Python files from the cloned repository.
 
 ## [Splitting scripts into prefix, middle and suffix](split_generator.py)
-To prepare the dataset for the model, I implemented the `SplitGenerator` class, which splits Python files into three sections: **prefix**, **middle**, and **suffix**. The prefix** and suffix sections each contain 200 tokens, providing ample context for predicting the middle segment, which is 40 tokens long. 
+To prepare the dataset for the model, I implemented the `SplitGenerator` class, which splits Python files into three sections: **prefix**, **middle**, and **suffix**. The prefix and suffix sections each contain 200 tokens, providing ample context for predicting the middle segment, which is 40 tokens long. 
 
 The process works as follows:
 - **Tokenization**: The code is tokenized using a provided tokenizer.
@@ -19,7 +19,7 @@ middle = tokens[current_position + self.prefix_length:current_position +
 suffix = tokens[current_position + self.prefix_length + self.middle_length:current_position +
                          self.prefix_length + self.middle_length + self.suffix_length]
 ```
-- **Splits Dataset Generation**: I used the `generate()` method to create a CSV file with 40 examples, each containing a filename, prefix, middle, and suffix for training.
+- **Splits Dataset Generation**: I used the `generate()` method to create a CSV file with 40 examples, each containing a filename, prefix, middle, and suffix.
 
 ## [Running Tiny Starcoder](tiny_starcoder_evaluation.ipynb)
 The `get_completion` function generates predictions for the middle part of a code snippet. It takes the prefix and suffix as inputs, tokenizes them, and prepares them for the model. The model generates a completion based on the input, which is then decoded to extract the middle portion of the text.
