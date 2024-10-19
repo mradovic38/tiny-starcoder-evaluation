@@ -54,7 +54,7 @@ class TracksJsonWriter(AbstractWriter):
         self.object_fname = object_fname
         self.keypoints_fname = keypoints_fname
 
-    def _remove_existing_files(self, files"|2|Some parts make sense, but mostly incorrect.|False|11.391510485536054|0.02777619034011792|0.33333333333333337|0.11764705882352941|0.27777777777777773
+    def _remove_existing_files(self, files"|2|Some parts make sense, but mostly incorrect.|False|34.72878886685431|0.1668795940625071|0.3157894736842105|0.1111111111111111|0.2631578947368421
 code_examples\club_assigner.py|" os.listdir(self.output_dir) if name.startswith('player')])
 
     def apply_mask(self, image: np.ndarray, green_threshold: float = 0.08) -> np.ndarray:
@@ -75,10 +75,10 @@ code_examples\club_assigner.py|" os.listdir(self.output_dir) if name.startswith(
         lower_green = np.array([36, 25, 25])
         upper_green = np.array([86, 2"|"55, 255])
 
-        # create the mask
-        mask = cv2.inrange(hsv_img, lower_green, upper_green)
+        # Create the mask
+        mask = cv2.inRange(hsv_img, lower_green, upper_green)
 
-        # count the number"|" of masked pixels
+        # Count the number"|" of masked pixels
         total_pixels = image.shape[0] * image.shape[1]
         masked_pixels = cv2.countNonZero(cv2.bitwise_not(mask))
         mask_percentage = masked_pixels / total_pixels
@@ -103,10 +103,11 @@ code_examples\club_assigner.py|" os.listdir(self.output_dir) if name.startswith(
         # Reshape image to 2D array
         img_reshape ="|", 25])
 
-        # define the mask
-        mask = cv2.inrange(hsv_img, lower_green, upper_green)
+        # Define the mask
+        mask = cv2.inRange(hsv_img, lower_green, upper_green)
 
-        # apply mask"|0|Almost entirely correct. Some parts differ, but the meaning is fully correct.|False|71.65420281454047|0.49309782490179943|0.6875|0.6666666666666666|0.6875
+        # Apply mask
+      "|0|Almost entirely correct. Some parts differ, but the meaning is fully correct.|False|71.5370624431677|0.7559926197136398|0.761904761904762|0.7000000000000001|0.761904761904762
 code_examples\ball_to_player_assigner.py|"ball_speed
         self.speed_check_frames = speed_check_frames
         self.possession_tracker = PossessionTracker(club1, club2)
@@ -127,10 +128,10 @@ code_examples\ball_to_player_assigner.py|"ball_speed
             current_frame (int): The current frame number.
 
         Returns:
-           "|"bool: true if the ball movement is valid, false otherwise.
+           "|" bool: True if the ball movement is valid, False otherwise.
         """"""
         if not self.ball_history:
-            return true  # no history, so movement is valid
+            return True  # No history, so movement is valid
         
         last_ball"|"_pos, last_frame = self.ball_history[-1]
 
@@ -149,12 +150,12 @@ code_examples\ball_to_player_assigner.py|"ball_speed
         Args:
             tracks (Dict[str, Any]): A dictionary containing tracked objects.
             current_frame (int): The current frame number.
-            penalty_point_1_pos (Tuple[float, float"|"bool: true if the ball is moving, false otherwise.
+            penalty_point_1_pos (Tuple[float, float"|" bool: True if the ball is moving, False otherwise.
         """"""
         if self.ball_exists:
-            return true
+            return True
 
-        if self.last_possession_frame is non"|1|The comment is entirely correct, but the following code is mostly incorrect.|False|42.69758976765509|0.2735477552240645|0.6382978723404256|0.35555555555555557|0.5957446808510639
+        if self.last_possession_frame is Non"|1|The comment is entirely correct, but the following code is mostly incorrect.|False|50.86561778029923|0.41172693065828364|0.6250000000000001|0.34782608695652173|0.5833333333333334
 code_examples\football_video_processor.py|"()[-1]
         possession_club1 = possession[0]
         possession_club2 = possession[1]
@@ -172,7 +173,7 @@ code_examples\football_video_processor.py|"()[-1]
         club1_color = rgb_bgr_converter(club1_color)
         club2_color = rgb_bgr_converter(club2"|"_color)
 
-        # draw club 1's possession (left)
+        # Draw club 1's possession (left)
         cv2.rectangle(frame, (bar_x, bar_y), (bar_x + club1_"|"width, bar_y + bar_height), club1_color, -1)
 
         # Draw neutral possession (middle)
@@ -187,8 +188,8 @@ code_examples\football_video_processor.py|"()[-1]
         # Calculate the"|"_color)
         neutral_color = rgb_bgr_converter(neutral_color)
 
-        # draw the progress bar
-        cv2.rectangle(frame, (bar_"|2|Some parts make sense, but for the main part of the code, the meaning is not correct.|False|36.24825167079533|0.039524926351130286|0.42424242424242425|0.2580645161290323|0.3636363636363636
+        # Draw the progress bar
+        cv2.rectangle(frame, (bar_"|2|Some parts make sense, but for the main part of the code, the meaning is not correct.|False|45.80112011738665|0.38870836101538103|0.4210526315789474|0.27777777777777773|0.36842105263157887
 code_examples\football_video_processor.py|" np.ndarray:
         """"""
         Combines the original video frame with the projection of player positions on the field image.
@@ -213,7 +214,7 @@ code_examples\football_video_processor.py|" np.ndarray:
         new_h_proj = int(h_proj * scale_proj)
         projection_resized = cv2"|".resize(projection_frame, (new_w_proj, new_h_proj))
 
-        # create a blank canvas of 1920x1080
+        # Create a blank canvas of 1920x1080
         combined_"|"frame = np.zeros((canvas_height, canvas_width, 3), dtype=np.uint8)
 
         # Copy the main frame onto the canvas (top-left corner)
@@ -230,7 +231,8 @@ code_examples\football_video_processor.py|" np.ndarray:
 
        "|".resize(projection_frame, (new_w_proj, new_h_proj))
 
-        # combine the original frame with the projection of player positions on the field image"|0|Almost entirely correct.|False|60.02633550910004|0.14216645907653844|0.5641025641025642|0.43243243243243246|0.5128205128205128
+        # Combine the original frame with the projection of player positions on the field image
+      "|0|Almost entirely correct.|False|59.635185548082816|0.5379065333266195|0.4680851063829787|0.3555555555555555|0.425531914893617
 code_examples\football_video_processor.py|" all_tracks['object'] = self.speed_estimator.calculate_speed(
                 all_tracks['object'], self.frame_num, self.cur_fps
             )
@@ -256,13 +258,13 @@ code_examples\football_video_processor.py|" all_tracks['object'] = self.speed_es
 
         Args:
             frame (np.ndarray): The current video frame to be annotated.
-            tracks (Dict[str, Dict[int, np.ndarray]]): A dictionary containing tracking data"|"for objects and keypoints.
+            tracks (Dict[str, Dict[int, np.ndarray]]): A dictionary containing tracking data"|" for objects and keypoints.
 
-        returns:
-            np.ndarray: the annotated video frame.
+        Returns:
+            np.ndarray: The annotated video frame.
         """"""
          
-        # draw the frame number if required
+        # Draw the frame number if required
         if self.draw_frame_num:"|"
             frame = self.frame_num_annotator.annotate(frame, {'frame_num': self.frame_num})
         
@@ -284,11 +286,13 @@ code_examples\football_video_processor.py|" all_tracks['object'] = self.speed_es
 
     def _combine_frame_projection(self, frame: np.ndarray, projection_frame: np.ndarray) ->"|"s.
 
-        returns:
-            np.ndarray: the annotated frame.
+        Returns:
+            np.ndarray: The annotated frame.
         """"""
-        # get the current frame number
-        self.frame_num = frame.shape[0]"|1|Mostly correct, but it did not notice the tab in the suffix so the code would not compile.|False|42.85904935476806|0.1973212456326944|0.6|0.31578947368421056|0.6
+        # Get the current frame number
+        self.frame_num = frame.shape[0]
+
+      "|1|Mostly correct, but it did not notice the tab in the suffix so the code would not compile.|False|53.58383677434426|0.3896651261444002|0.5853658536585366|0.30769230769230765|0.5853658536585366
 code_examples\club_assigner.py|" img.reshape(-1, 3)
         
         # K-Means clustering
@@ -332,7 +336,7 @@ code_examples\club_assigner.py|" img.reshape(-1, 3)
 
     def get_jersey_color(self,"|"bgr[1]))
 
-    def get_jersey_color_bgr_from_img(self, img: np.ndarray, player_id: int, is"|1|Got some parts correct, but some parts are missing/wrong.|False|60.24524534717096|0.47750342648354643|0.7777777777777778|0.5882352941176471|0.7222222222222222
+    def get_jersey_color_bgr_from_img(self, img: np.ndarray, player_id: int, is"|1|Got some parts correct, but some parts are missing/wrong.|False|67.742832825825|0.6217400375926629|0.8095238095238095|0.6500000000000001|0.761904761904762
 code_examples\club_assigner.py|"from .club import Club
 
 import os
@@ -355,7 +359,7 @@ class ClubAssigner:
         self.club1 = club1
         self.club2 = club2
         self.model = ClubAssignerModel(self.club1, self."|"club2)
-        self.club_colors: dict[str, any] = {
+        self.club_colors: Dict[str, Any] = {
             club1.name: club1.player_jersey_color,
             club2.name:"|" club2.player_jersey_color
         }
@@ -380,7 +384,7 @@ class ClubAssigner:
         self.images_to_save = images_to_save
         self.images_save_path = images_save_path
 
-    def assign_club"|1|Some parts are meaninigfull|False|9.13124680674188|0.028517539529041507|0.1818181818181818|0.06451612903225808|0.1818181818181818
+    def assign_club"|1|Some parts are meaninigfull|False|17.288689334470618|0.13442725522288548|0.20512820512820512|0.10810810810810811|0.20512820512820512
 code_examples\projection_annotator.py|"from .abstract_annotator import AbstractAnnotator
 from utils import is_color_dark, rgb_bgr_converter
 
@@ -403,8 +407,8 @@ class ProjectionAnnotator(AbstractAnnotator):
         Parameters:
             frame (np.ndarray): The image on which to draw the outline.
             pos (tuple): The ("|"x, y) position of the object.
-            shape (str): the shape of the outline ('circle', 'square', 'dashed_circle', 'plus').
-            size (int): the"|" size of the outline.
+            shape (str): The shape of the outline ('circle', 'square', 'dashed_circle', 'plus').
+            size (int): The"|" size of the outline.
             is_dark (bool): Flag indicating whether the color is dark (determines outline color).
         """"""
         outline_color = (255, 255, 255) if is_dark else (0, 0, 0)
@@ -415,9 +419,9 @@ class ProjectionAnnotator(AbstractAnnotator):
             top_left = (int(pos[0]) - (size + 2), int(pos[1]) - (size + 2))
             bottom_right = (int(pos[0]) + (size + 2), int(pos[1]) + (size + 2))
             cv2.rectangle(frame, top_left, bottom_right, color=outline_color, thickness"|"pos) position of the outline.
-            shape (str): the shape of the outline.
-            size (int): the size of the outline.
-            is_dark (bool): fla"|1|Some parts are correct.|False|49.96621353002344|0.3243901601387751|0.5909090909090909|0.47619047619047616|0.5909090909090909
+            shape (str): The shape of the outline.
+            size (int): The size of the outline.
+            is_dark (bool): Fla"|1|Some parts are correct.|False|54.151823930498345|0.424908434506412|0.5652173913043478|0.4545454545454545|0.5652173913043478
 code_examples\bbox_utils.py|"from typing import Tuple
 
 def get_bbox_center(bbox: Tuple[float, float, float, float]) -> Tuple[float, float]:
@@ -438,12 +442,13 @@ def get_bbox_width(bbox: Tuple[float, float, float, float]) -> float:
     Calculate the width of a bounding box.
 
     Args:
-        bbox (Tuple[float, float, float, float]): The bounding box defined by"|"(x1, y1, x2, y2).
+        bbox (Tuple[float, float, float, float]): The bounding box defined by"|" (x1, y1, x2, y2).
 
-    returns:
-        float: the width of the bounding box.
+    Returns:
+        float: The width of the bounding box.
     """"""
-    x1, _, x2, _ = bbox"|" return x2 - x1
+    x1, _, x2, _ = bbox
+   "|" return x2 - x1
 
 def point_distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
     """"""
@@ -463,12 +468,12 @@ def point_coord_diff(p1: Tuple[float, float], p2: Tuple[float, float]) -> Tuple[
     Calculate the coordinate differences between two points.
 
     Args:
-        p1 (Tuple[float, float"|"the (x1, y1, x2, y2).
+        p1 (Tuple[float, float"|" the (x1, y1, x2, y2).
 
-    returns:
-        float: the width of the bounding box.
+    Returns:
+        float: The width of the bounding box.
     """"""
-    x1, y1,"|0|Mostly correct, the ending is a bit off.|False|78.33119284704766|0.7139379321458328|0.8666666666666667|0.8571428571428571|0.8666666666666667
+    x1, y1, "|0|Mostly correct, the ending is a bit off.|False|85.19407619097936|0.7982204664176965|0.8571428571428571|0.85|0.8571428571428571
 code_examples\object_annotator.py|"
                 color = rgb_bgr_converter(color)
 
@@ -488,10 +493,10 @@ code_examples\object_annotator.py|"
         return frame
     
 
-    def draw_triangle(self, frame: np.ndarray, bbox:"|"tuple[int, int, int, int], 
-                      color: tuple[int, int, int]) -> np.ndarray:
+    def draw_triangle(self, frame: np.ndarray, bbox:"|" Tuple[int, int, int, int], 
+                      color: Tuple[int, int, int]) -> np.ndarray:
         """"""
-        draws a triangle to indicate the ball's position."|"
+        Draws a triangle to indicate the ball's position."|"
 
         Args:
             frame (np.ndarray): The frame where the triangle will be drawn.
@@ -513,11 +518,11 @@ code_examples\object_annotator.py|"
         # Define the triangle points
         points = np.array([
             [x, y],
-            [x - 8, y - 1"|"tuple[int, int, int, int], color: tuple[int, int, int, int]):
-        """"""draws a triangle on the frame.
+            [x - 8, y - 1"|" Tuple[int, int, int, int], color: Tuple[int, int, int, int]):
+        """"""Draws a triangle on the frame.
 
-        args:
-            fram"|0|Mostly correct|False|68.49387784739072|0.3517559811415743|0.7|0.5789473684210527|0.7
+        Args:
+            fram"|0|Mostly correct|False|64.1931100766128|0.47576053190766077|0.7142857142857143|0.6|0.7142857142857143
 code_examples\ball_to_player_assigner.py|"]): The position of the first penalty point (x, y).
             penalty_point_2_pos (Tuple[float, float]): The position of the second penalty point (x, y).
 
@@ -539,8 +544,8 @@ code_examples\ball_to_player_assigner.py|"]): The position of the first penalty 
                 ball_pos = ball_data['projection']  
                 ball_bbox_center = get_bbox_center(ball_data['bbox'])  
 
-                is_"|"near_penalty_point = false
-                if penalty_point_1_pos is not none:
+                is_"|"near_penalty_point = False
+                if penalty_point_1_pos is not None:
                     if point_distance(ball_bbox_center, penalty_point_1_pos)"|" < self.penalty_point_distance:
                         is_near_penalty_point = True
                 if penalty_point_2_pos is not None:
@@ -558,9 +563,9 @@ code_examples\ball_to_player_assigner.py|"]): The position of the first penalty 
             best_ball_key, best_ball_pos = None, None
             players = {**tracks.get('player', {}), **tracks.get('goalkeeper', {})}
 
-            for ball"|"near_penalty_point = false
+            for ball"|"near_penalty_point = False
                 for ball_pos_2 in valid_ball_tracks:
-                    if ball_pos_2[0] < ball_pos["|1|For the most part makes senese. This is a bit harder input sequence.|False|21.489499387618036|0.10025157431478134|0.3902439024390244|0.15384615384615383|0.3902439024390244
+                    if ball_pos_2[0] < ball_pos["|1|For the most part makes senese. This is a bit harder input sequence.|False|32.909107857480244|0.25149036624422777|0.3902439024390244|0.15384615384615383|0.3902439024390244
 code_examples\video_utils.py|" video or None to skip saving.
         batch_size (int, optional): Number of frames to process at once.
         skip_seconds (int, optional): Seconds to skip at the beginning of the video.
@@ -583,9 +588,9 @@ code_examples\video_utils.py|" video or None to skip saving.
     for _ in range(frames_to_skip):
         cap.read()  # Simply read and discard the frames
 
-    frame_queue = queue."|"queue(maxsize=100)
-    processed_queue = queue.queue(maxsize=100)
-    stop_event = threading.event()
+    frame_queue = queue."|"Queue(maxsize=100)
+    processed_queue = queue.Queue(maxsize=100)
+    stop_event = threading.Event()
     
     def signal_handler("|"signum, frame):
         """"""Signal handler to initiate shutdown on interrupt.""""""
@@ -611,13 +616,13 @@ code_examples\video_utils.py|" video or None to skip saving.
                 frame_queue.put((frame_count, resized_frame))
                 frame_count += 1
         except Exception as e:
-            print(f""Error in"|"queue()
-    stop_event = threading.event()
+            print(f""Error in"|"Queue()
+    stop_event = threading.Event()
 
     def signal_handler(signal, frame):
-        """"""signal handler to initiate shutdown on interrupt.""""""
+        """"""Signal handler to initiate shutdown on interrupt.""""""
 
-        print(""interrupt received"|1|The meaning is correct|False|37.25104413103037|0.1531024544118244|0.4444444444444445|0.35294117647058826|0.4444444444444445
+        print(""Interrupt received"|1|The meaning is correct|False|48.773019444843214|0.28427903339173927|0.380952380952381|0.3|0.380952380952381
 code_examples\projection_annotator.py|" and 'ball'.
 
         Returns:
@@ -636,9 +641,9 @@ code_examples\projection_annotator.py|" and 'ball'.
 
                     if class_name in ['player', 'goalkeeper']:
                         shape = 'square' if class_name == 'goalkeeper' else 'circle'
-                        self._draw_outline(frame, proj_pos, shape=shape,"|"is_dark=is_dark_color)
+                        self._draw_outline(frame, proj_pos, shape=shape,"|" is_dark=is_dark_color)
 
-                        if track_info.get('has_ball', false):
+                        if track_info.get('has_ball', False):
                             cv2.circle(frame, (int(proj_pos[0"|"]), int(proj_pos[1])), radius=15, color=(0, 255, 0), thickness=2)
                         if shape == 'circle':
                             cv2.circle(frame, (int(proj_pos[0]), int(proj_pos[1])), radius=10, color=color, thickness=-1)
@@ -648,9 +653,9 @@ code_examples\projection_annotator.py|" and 'ball'.
                             cv2.rectangle(frame, top_left, bottom_right, color=color, thickness=-1)
 
                     elif class_name == 'referee':
-                        self._draw_outline(frame, proj_pos, shape='dashed_circle', is_dark"|"thickness=2)
+                        self._draw_outline(frame, proj_pos, shape='dashed_circle', is_dark"|" thickness=2)
                         elif class_name == 'ball':
-                            cv2.circle(frame, (int(proj_pos[0]), int(proj_pos["|1|Makes sense, but some parts are wrong.|False|40.587365972490254|0.02777619034011792|0.45714285714285713|0.3636363636363636|0.45714285714285713
+                            cv2.circle(frame, (int(proj_pos[0]), int(proj_pos["|1|Makes sense, but some parts are wrong.|False|45.84878016782165|0.40155930370209536|0.48648648648648646|0.39999999999999997|0.48648648648648646
 code_examples\football_video_processor.py|" 1e-6) -> List[np.ndarray]:
         """"""
         Processes a batch of video frames, detects and tracks objects, assigns ball possession, and annotates the frames.
@@ -674,7 +679,7 @@ code_examples\football_video_processor.py|" 1e-6) -> List[np.ndarray]:
         # Process each frame in the batch
         for idx, (frame, object_detection, kp_detection) in enumerate(zip(frames, batch_obj_detections"|", batch_kp_detections)):
             
-            # track detected objects and keypoints
+            # Track detected objects and keypoints
             obj_tracks = self.obj_tracker.track(object_detection)
             kp_tracks = self."|"kp_tracker.track(kp_detection)
 
@@ -696,11 +701,11 @@ code_examples\football_video_processor.py|" 1e-6) -> List[np.ndarray]:
             # Estimate the speed of the tracked objects
            "|", batch_kp_detections)):
 
-            # process each frame in the batch
+            # Process each frame in the batch
             processed_frames.append(frame)
 
-            # calculate the speed of the tracked objects
-            all"|2|Started good, but the rest is wrong.|False|26.239283799210465|0.05415315253510895|0.25|0.15789473684210525|0.25
+            # Calculate the speed of the tracked objects
+            all"|2|Started good, but the rest is wrong.|False|36.15682005478747|0.19757820084213695|0.2790697674418604|0.1951219512195122|0.2790697674418604
 code_examples\video_utils.py|" frame capture: {e}"")
         finally:
             cap.release()
@@ -729,12 +734,12 @@ code_examples\video_utils.py|" frame capture: {e}"")
             except queue.Empty:
                 continue
             except Exception as e:
-                print(f""Error in"|"frame processing: {e}"")
+                print(f""Error in"|" frame processing: {e}"")
 
-        processed_queue.put(none)  # signal end of processing
-        print(""frame processing complete"")
+        processed_queue.put(None)  # Signal end of processing
+        print(""Frame processing complete"")
 
-    def process_batch(batch: list[tuple["|"int, np.ndarray]]) -> None:
+    def process_batch(batch: List[Tuple["|"int, np.ndarray]]) -> None:
         """"""
         Process a batch of frames and put results in the processed queue.
 
@@ -756,13 +761,13 @@ code_examples\video_utils.py|" frame capture: {e}"")
         print(""Starting frame display"")
         while not stop_event.is_set():
             try:
-                item = processed_queue.get(timeout=1)"|"frame processing: {e}"")
+                item = processed_queue.get(timeout=1)"|" frame processing: {e}"")
                 traceback.print_exc()
 
     def process(
-        processor: processor,
-        batch: list[tuple[int, np.ndarray]],
-        fp"|1|Makes sense, but not correct.|False|33.345135343768604|0.07054963417278473|0.4736842105263158|0.2777777777777778|0.4736842105263158
+        processor: Processor,
+        batch: List[Tuple[int, np.ndarray]],
+        fp"|1|Makes sense, but not correct.|False|45.40470880180688|0.24516328545632446|0.4736842105263158|0.2777777777777778|0.4736842105263158
 code_examples\football_video_processor.py|" return combined_frame
     
 
@@ -788,7 +793,7 @@ code_examples\football_video_processor.py|" return combined_frame
         # Draw background rectangle (black with transparency)
         cv2.rectangle(overlay, (gap_x, gap_y), (gap_x + overlay_width"|", gap_y + overlay_height), (0, 0, 0), -1)
         alpha = 0.4
-        frame = cv2.addweighted(overlay, alpha"|", frame, 1 - alpha, 0)
+        frame = cv2.addWeighted(overlay, alpha"|", frame, 1 - alpha, 0)
 
         # Position for possession text
         text_x = gap_x + 15
@@ -806,8 +811,8 @@ code_examples\football_video_processor.py|" return combined_frame
         # Get possession data from the ball-to-player assigner
         possession = self.ball_to_player_assigner.get_ball_possessions"|", gap_y), (0, 0, 255), 2)
 
-        # draw overlay rectangle (black with transparency)
-        cv2.rectangle(overlay"|1|Close, makes a lot of sense, but not correct.|False|31.048276356644543|0.03112418223320603|0.45161290322580644|0.1379310344827586|0.38709677419354843
+        # Draw overlay rectangle (black with transparency)
+        cv2.rectangle(overlay"|1|Close, makes a lot of sense, but not correct.|False|30.81296855808484|0.29470691492333945|0.4444444444444444|0.17647058823529413|0.3888888888888889
 code_examples\football_video_processor.py|"1_text_x = bar_x + club1_width // 2 - 10  # Center of club 1's possession bar
         club1_text_y = bar_y + 35  # 20 pixels below the bar
         cv2.putText(frame, possession_club1_text, (club1_text_x, club1_text_y), 
@@ -816,7 +821,7 @@ code_examples\football_video_processor.py|"1_text_x = bar_x + club1_width // 2 -
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, club1_color, 1)  # Club 1's color
 
         # Text for club 2
-        club2_text_"|"x = bar_x + club1_width + neutral_width + club2_width // 2 - 10  # center of club 2's possession bar
+        club2_text_"|"x = bar_x + club1_width + neutral_width + club2_width // 2 - 10  # Center of club 2's possession bar
         club2"|"_text_y = bar_y + 35  # 20 pixels below the bar
         cv2.putText(frame, possession_club2_text, (club2_text_x, club2_text_y), 
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2)  # Black outline
@@ -829,8 +834,8 @@ code_examples\football_video_processor.py|"1_text_x = bar_x + club1_width // 2 -
         """"""
         Saves the tracking information for objects and keypoints to the specified directory.
 
-        Args"|"x = bar_x + club2_width // 2 - 10  # center of club 2's possession bar
-        club2_text_y = ba"|1|Shares some meaning, but not correct.|False|70.63638129873749|0.7014922197807993|0.8108108108108109|0.7428571428571428|0.8108108108108109
+        Args"|"x = bar_x + club2_width // 2 - 10  # Center of club 2's possession bar
+        club2_text_y = ba"|1|Shares some meaning, but not correct.|False|72.66157760092304|0.7711225022142205|0.8260869565217391|0.8181818181818182|0.8260869565217391
 code_examples\ball_to_player_assigner.py|"from utils import point_distance, get_bbox_center
 from .possession_tracking import PossessionTracker
 from club_assignment import Club
@@ -854,9 +859,9 @@ class BallToPlayerAssigner:
         Initializes the BallToPlayerAssigner with necessary parameters.
 
         Args:
-            club1 ("|"club): the club object of the first club.
-            club2 (club): the club object of the second club.
-            max_ball_distance (float): the maximum distance to consider a player"|" as being able to possess the ball.
+            club1 ("|"Club): The Club object of the first club.
+            club2 (Club): The Club object of the second club.
+            max_ball_distance (float): The maximum distance to consider a player"|" as being able to possess the ball.
             grace_period (float): The time in seconds a player retains possession after losing the ball.
             ball_grace_period (float): The time in seconds to allow a player to retain possession after the ball detection is lost.
             fps (int): Frames per second for the video feed.
@@ -867,9 +872,9 @@ class BallToPlayerAssigner:
         self.max_ball_distance = max_ball_distance
         self.grace_period_frames = int(grace_period * fps)
         self.ball_grace_period_frames = int(ball_grace_period * fps)
-        self.max_ball_speed = max_"|"club): the club that the ball is assigned to.
-            club2 (club): the club that the ball is assigned to.
-            max_ball_distance (float): the maximu"|1|Missed some explainations, but partially correct.|False|51.405648596006685|0.1750200329239495|0.5660377358490566|0.35294117647058826|0.5283018867924528
+        self.max_ball_speed = max_"|"Club): The club that the ball is assigned to.
+            club2 (Club): The club that the ball is assigned to.
+            max_ball_distance (float): The maximu"|1|Missed some explainations, but partially correct.|False|49.31718839632407|0.47000080768143077|0.5714285714285714|0.3703703703703704|0.5357142857142857
 code_examples\video_utils.py|"import cv2
 import os
 import glob
@@ -922,7 +927,7 @@ def process_video(processor = None, video_source: str = 0, output_video: Optiona
         video_source (str, optional): Video source (default is ""0"" for webcam).
         output_video (Optional[str], optional): Path to save the output"|", fps, frame_size)
     for frame_file in glob.glob(os.path.join(frame_dir, ""*.jpg"")):
-        frame = cv2"|2|Has some similarities, but the meaning is incorrect.|False|62.27991160520138|0.10025157431478134|0.7999999999999999|0.6666666666666667|0.7999999999999999
+        frame = cv2"|2|Has some similarities, but the meaning is incorrect.|False|68.94047256208589|0.5216726804870612|0.7777777777777778|0.6470588235294118|0.7777777777777778
 code_examples\speed_estimator.py|"import math
 from collections import deque
 from typing import Dict, Any, Tuple
@@ -941,7 +946,7 @@ class SpeedEstimator:
             field_height (int): Height of the field in pixels.
             real_field_length (float): Real-world length of the field in meters.
             real_field_width (float): Real-world width of the field in meters.
-            smoothing_window (int): Number of"|"frames to consider for speed smoothing.
+            smoothing_window (int): Number of"|" frames to consider for speed smoothing.
         """"""
         self.field_width = field_width
         self.field_height = field_height
@@ -963,11 +968,11 @@ class SpeedEstimator:
         Calculate the speed of players based on their projections and update the track information.
 
         Args:
-            tracks (Dict[str, Any]): A dictionary containing"|"smoothing windows to use.
+            tracks (Dict[str, Any]): A dictionary containing"|" smoothing windows to use.
         """"""
         self.field_width = field_width
         self.field_height = field_height
-        self.real_field_length = rea"|0|A lot of similarities.|False|79.3395041135466|0.5301288270677014|0.8|0.6842105263157895|0.7500000000000001
+        self.real_field_length = rea"|0|A lot of similarities.|False|79.807773058756|0.8047174058421076|0.7804878048780488|0.6666666666666667|0.7317073170731706
 code_examples\keypoints_tracker.py|"from tracking.abstract_tracker import AbstractTracker
 
 import cv2
@@ -991,8 +996,8 @@ class KeypointsTracker(AbstractTracker):
         super().__init__(model_path, conf)  # Call the Tracker base class constructor
         self.kp_conf = kp_conf  # Keypoint Confidence Threshold
         self.tracks = []  # Initialize tracks list
-        self"|".cur_frame = 0  # frame counter initialization
-        self.original_size = (1920, 1080)  # original resolution (1920"|"x1080)
+        self"|".cur_frame = 0  # Frame counter initialization
+        self.original_size = (1920, 1080)  # Original resolution (1920"|"x1080)
         self.scale_x = self.original_size[0] / 1280
         self.scale_y = self.original_size[1] / 1280
 
@@ -1015,8 +1020,8 @@ class KeypointsTracker(AbstractTracker):
 
     def track(self, detection: Results) -> dict:
         """"""
-        Perform keypoint tracking"|".original_size = (640, 480)  # original image size
-        self.scale_x = self.original_size[0] /"|2|Share some meaning, but mostly incorrect.|False|26.66090188234886|0.033360862268577436|0.35714285714285715|0.15384615384615385|0.21428571428571427
+        Perform keypoint tracking"|".original_size = (640, 480)  # Original image size
+        self.scale_x = self.original_size[0] /"|2|Share some meaning, but mostly incorrect.|False|37.563551098188555|0.3183198496076515|0.3902439024390244|0.20512820512820512|0.34146341463414637
 code_examples\homography.py|"import cv2
 import numpy as np
 from typing import Tuple, List
@@ -1042,9 +1047,9 @@ class HomographySmoother:
         Returns:
             np.ndarray: The smoothed homography matrix of shape ("|"3, 3).
         """"""
-        if self.smoothed_h is none:
-            # initialize with the first homography matrix
-            self.smoothed_h = current_"|"H
+        if self.smoothed_H is None:
+            # Initialize with the first homography matrix
+            self.smoothed_H = current_"|"H
         else:
             # Apply exponential smoothing
             self.smoothed_H = self.alpha * current_H + (1 - self.alpha) * self.smoothed_H
@@ -1065,9 +1070,9 @@ def get_homography(keypoints: dict, top_down_keypoints: np.ndarray) -> np.ndarra
     """"""
     kps: List[Tuple["|"3, 3).
         """"""
-        if self.smoothed_h is none:
-            # compute the smoothed homography matrix
-            self.smoothe"|0|Mostly correct.|False|62.54945344197136|0.4647041475704685|0.7878787878787877|0.6451612903225806|0.7878787878787877
+        if self.smoothed_H is None:
+            # Compute the smoothed homography matrix
+            self.smoothe"|0|Mostly correct.|False|66.33189383907163|0.7168978514751821|0.7916666666666666|0.7391304347826085|0.75
 code_examples\main.py|"from utils import process_video
 from tracking import ObjectTracker, KeypointsTracker
 from club_assignment import ClubAssigner, Club
@@ -1092,7 +1097,7 @@ def main():
 
     # 2. Load the keypoints detection model
     # Adjust the '"|"conf' and 'kp_conf' values as per your requirements.
-    kp_tracker = keypointstracker(
+    kp_tracker = KeypointsTracker(
         model_path='models/weights/keypoints-detection.pt', #"|" Keypoints Model Weights Path
         conf=.3,                                            # Field Detection confidence threshold
         kp_conf=.7,                                         # Keypoint confidence threshold
@@ -1111,8 +1116,8 @@ def main():
                  )   
 
     # Create a ClubAssigner"|"keypoint_conf' value as per your requirements.
-    kp_tracker = keypointstracker(
-        model_path='models/weights/keypoint-detection.pt',"|0|Almost entirely correct|False|68.56124936852565|0.4733406936045769|0.8888888888888888|0.8823529411764706|0.8888888888888888
+    kp_tracker = KeypointsTracker(
+        model_path='models/weights/keypoint-detection.pt',  "|0|Almost entirely correct|False|85.82157967221934|0.7093105630279788|0.8837209302325582|0.8780487804878048|0.8837209302325582
 code_examples\object_annotator.py|"from .abstract_annotator import AbstractAnnotator
 from utils import get_bbox_width, get_bbox_center, is_color_dark, rgb_bgr_converter
 
@@ -1129,8 +1134,8 @@ class ObjectAnnotator(AbstractAnnotator):
         Initializes the ObjectAnnotator with predefined ball and referee annotation colors.
 
         Args:
-            ball_annotation_color (Tuple[int, int, int]): RGB color to annotate"|"the ball with.
-            referee_annotation_color (tuple[int, int, int]): rgb color to annotate the referees with.
+            ball_annotation_color (Tuple[int, int, int]): RGB color to annotate"|" the ball with.
+            referee_annotation_color (Tuple[int, int, int]): RGB color to annotate the referees with.
         """"""
         self.ball_annotation_"|"color = ball_annotation_color
         self.referee_annotation_color = referee_annotation_color
@@ -1157,9 +1162,9 @@ class ObjectAnnotator(AbstractAnnotator):
                 # Get the club color, or default to yellow
                 color = item.get('club_color', (255, 255, 0))
                 # Convert RGB to BGR format for OpenCV"|"s the ball.
-            referee_annotation_color (tuple[int, int, int]): rgb color to annotate the referee.
+            referee_annotation_color (Tuple[int, int, int]): RGB color to annotate the referee.
         """"""
-        self.ball"|0|Almost entirely correct.|False|74.79428595129487|0.5421806974540421|0.8947368421052632|0.7777777777777778|0.8947368421052632
+        self.ball"|0|Almost entirely correct.|False|79.81917538754732|0.7680636372277183|0.8695652173913043|0.7727272727272727|0.8695652173913043
 code_examples\object_position_mapper.py|"from .abstract_mapper import AbstractMapper
 from .homography import get_homography, apply_homography, HomographySmoother
 from utils.bbox_utils import get_feet_pos
@@ -1185,7 +1190,7 @@ class ObjectPositionMapper(AbstractMapper):
         """"""
         super().__init__()
         self.top_down_keypoints = top_down_keypoints
-        self.homography_smoother = homo"|"graphySmoother(alpha=alpha)
+        self.homography_smoother = Homo"|"graphySmoother(alpha=alpha)
 
     def map(self, detection: dict) -> dict:
         """"""Maps the detection data to their positions in the top-down view.
@@ -1215,7 +1220,7 @@ class ObjectPositionMapper(AbstractMapper):
         self.top_down_keypoints = top_down_keypoints
         self.alpha = alpha
 
-    def ma"|1|Some parts are missing, some are added.|False|83.74213307350813|0.43361890903486755|0.7096774193548386|0.689655172413793|0.7096774193548386
+    def ma"|1|Some parts are missing, some are added.|False|78.21814409895109|0.7191314902376348|0.6666666666666666|0.65|0.6666666666666666
 code_examples\object_annotator.py|" size for the ellipse
         y = int(bbox[3])
         x, _ = get_bbox_center(bbox)
@@ -1232,7 +1237,7 @@ code_examples\object_annotator.py|" size for the ellipse
             cv2.ellipse(frame, center=(x, y), axes=(w, 20), angle=0, startAngle=-30, endAngle=240, color=color,
                         thickness=2, lineType=cv2.LINE_AA)
 
-        # Draw a small rectangle under the ellipse to hold the"|"object's id
+        # Draw a small rectangle under the ellipse to hold the"|" object's ID
         y = int(bbox[3]) + 10
         h, w = 10, 20
         cv2.rectangle(frame, (x - w"|", y - h), (x + w, y + h), color, cv2.FILLED)
@@ -1246,10 +1251,10 @@ code_examples\object_annotator.py|" size for the ellipse
         if speed >= 0:
             speed_str = f""{speed:.2f} km/h""
             x2 = x - len(speed_str) * 5
-            cv2.putText(frame, text=speed_str, org=(x2, y + 20), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=1,"|"rectangle
-        cv2.rectangle(frame, (x, y), (x + w, y + h), color, cv2.filled)
+            cv2.putText(frame, text=speed_str, org=(x2, y + 20), fontFace=cv2.FONT_HERSHEY_PLAIN, fontScale=1,"|" rectangle
+        cv2.rectangle(frame, (x, y), (x + w, y + h), color, cv2.FILLED)
 
-        # draw a small rectangl"|2|Mostly incorrect.|False|23.440058276054607|0.01626739260030573|0.4117647058823529|0.25|0.29411764705882354
+        # Draw a small rectangl"|2|Mostly incorrect.|False|37.799643031997086|0.25017620563560666|0.4186046511627907|0.24390243902439024|0.2790697674418604
 code_examples\video_utils.py|"
                 if item is None:
                     print(""No more frames to display"")
@@ -1278,9 +1283,10 @@ code_examples\video_utils.py|"
 
     with tempfile.TemporaryDirectory() as temp_dir:
         try:
-            threads = ["|"threading.thread(target=frame_capture_thread, name=""capture""),
-                threading.thread(target=frame_processing_thread, name=""processing""),
-                threading.thread(target"|"=frame_display_thread, args=(temp_dir,), name=""Display"")
+            threads = ["|"
+                threading.Thread(target=frame_capture_thread, name=""Capture""),
+                threading.Thread(target=frame_processing_thread, name=""Processing""),
+                threading.Thread(target"|"=frame_display_thread, args=(temp_dir,), name=""Display"")
             ]
 
             for thread in threads:
@@ -1307,9 +1313,9 @@ code_examples\video_utils.py|"
                 processed_queue.get()
 
             print(""All threads have completed."")
-            # Only convert"|"threading.thread(target=frame_display_thread, args=(temp_dir,), name=""frame display"") for _ in range(10)]
+            # Only convert"|"threading.Thread(target=frame_display_thread, args=(temp_dir,), name=""Frame Display"") for _ in range(10)]
 
-            for thread in threads"|2|Share some similarities, but mostly incorrect.|False|28.54461698486262|0.0|0.46153846153846156|0.16216216216216214|0.46153846153846156
+            for thread in threads"|2|Share some similarities, but mostly incorrect.|False|39.871442695912215|0.1924419078322111|0.45|0.15789473684210525|0.45
 code_examples\speed_estimator.py|" tracking information for players.
             frame_number (int): The current frame number of the video.
             fps (float): Frames per second of the video.
@@ -1332,12 +1338,12 @@ code_examples\speed_estimator.py|" tracking information for players.
                         time_diff = (frame_number - prev_frame) / fps
                         
                         # Calculate speed in km/h
-                        speed = (distance / time_diff) * 3.6 if time_diff > 0"|"else 0.0
+                        speed = (distance / time_diff) * 3.6 if time_diff > 0"|" else 0.0
 
-                        # apply maximum speed check
+                        # Apply maximum speed check
                         speed = min(speed, self.max_speed)
                         
-                        # apply smoothing
+                        # Apply smoothing
                         smoothed_speed = self._smooth_"|"speed(player_id, speed)
                         
                         # Add speed to track
@@ -1355,7 +1361,8 @@ code_examples\speed_estimator.py|" tracking information for players.
         
         return tracks
 
-    def _calculate_distance(self, pos1: Tuple[float, float], pos2: Tuple[float, float]) -> float"|"smoothed_speed = <|endoftext|"|2|Incorrect|False|1.9504232015715106|0.0022594987432262813|0.18181818181818182|0.09999999999999999|0.18181818181818182
+    def _calculate_distance(self, pos1: Tuple[float, float], pos2: Tuple[float, float]) -> float"|"
+                        smoothed_speed = <|endoftext|"|2|Incorrect|False|16.179903306166583|0.059466094840397665|0.3448275862068965|0.2962962962962963|0.3448275862068965
 code_examples\projection_annotator.py|"=2)
         elif shape == 'dashed_circle':
             dash_length, gap_length = 30, 30
@@ -1365,7 +1372,8 @@ code_examples\projection_annotator.py|"=2)
                 start_y = int(pos[1]) + int((size + 2) * np.sin(start_angle_rad))
                 end_x = int(pos[0]) + int((size + 2) * np.cos(end_angle_rad))
                 end_y = int(pos[1]) + int((size + 2) * np.sin(end_angle_rad))
-               "|cv2.line(frame, (start_x, start_y), (end_x, end_y), color=(0, 0, 0), thickness=2)|" elif shape == 'plus':
+               "|" cv2.line(frame, (start_x, start_y), (end_x, end_y), color=(0, 0, 0), thickness=2)
+       "|" elif shape == 'plus':
             cv2.line(frame, (int(pos[0]) - size, int(pos[1])), (int(pos[0]) + size, int(pos[1])), color=outline_color, thickness=10)
             cv2.line(frame, (int(pos[0]), int(pos[1]) - size), (int(pos[0]), int(pos[1]) + size), color=outline_color, thickness=10)
 
@@ -1376,9 +1384,9 @@ code_examples\projection_annotator.py|"=2)
         
         Parameters:
             frame (np.ndarray): The image on which to draw the annotations.
-            tracks (Dict): A dictionary containing tracking information for 'player', 'goalkeeper', 'referee',"|"start_angle = np.radians(start_angle_rad)
+            tracks (Dict): A dictionary containing tracking information for 'player', 'goalkeeper', 'referee',"|" start_angle = np.radians(start_angle_rad)
                 end_angle = np.radians(end_angle_rad)
-                cv2.circle(frame"|2|Wrong|False|8.900836723162044|0.0|0.35294117647058826|0.0|0.23529411764705882
+                cv2.circle(frame"|2|Wrong|False|28.00685866630036|0.04591564886239977|0.3888888888888889|0.058823529411764705|0.2777777777777778
 code_examples\object_tracker.py|"from tracking.abstract_tracker import AbstractTracker
 
 import supervision as sv
@@ -1403,8 +1411,8 @@ class ObjectTracker(AbstractTracker):
         self.classes = ['ball', 'goalkeeper', 'player', 'referee']
         self.tracker = sv.ByteTrack(lost_track_buffer=5)  # Initialize ByteTracker
         self.tracker.reset"|"()
-        self.all_tracks = {class_name: {} for class_name in self.classes}  # initialize tracks
-        self.cur_frame = 0  # frame counter"|" initialization
+        self.all_tracks = {class_name: {} for class_name in self.classes}  # Initialize tracks
+        self.cur_frame = 0  # Frame counter"|" initialization
         self.original_size = (1920, 1080)  # Original frame size (1920x1080)
         self.scale_x = self.original_size[0] / 1280
         self.scale_y = self.original_size[1] / 1280
@@ -1423,10 +1431,10 @@ class ObjectTracker(AbstractTracker):
         resized_frames = [self._preprocess_frame(frame) for frame in frames]
 
         # Use YOLOv8's predict method to handle batch inference
-        detections = self"|"(self.classes)  # reset the tracker
-        self.tracker.start()  # start the tracker
+        detections = self"|"(self.classes)  # Reset the tracker
+        self.tracker.start()  # Start the tracker
 
-    def _preprocess_frame(self, frame: np.ndarray"|2|Wrong|False|7.07679354291232|0.012764741709898067|0.3243243243243243|0.05714285714285714|0.27027027027027023
+    def _preprocess_frame(self, frame: np.ndarray"|2|Wrong|False|29.696613639352876|0.04417982879551243|0.3243243243243243|0.05714285714285714|0.27027027027027023
 code_examples\football_video_processor.py|"from .abstract_annotator import AbstractAnnotator
 from .abstract_video_processor import AbstractVideoProcessor
 from .object_annotator import ObjectAnnotator
@@ -1447,11 +1455,12 @@ from typing import List, Dict, Optional, Tuple
 
 class FootballVideoProcessor(AbstractAnnotator, AbstractVideoProcessor):
     """"""
-    A video processor for football footage that tracks objects and keypoints,"|"estimates speed, assigns the ball to player, calculates the ball possession 
+    A video processor for football footage that tracks objects and keypoints,"|"
+    estimates speed, assigns the ball to player, calculates the ball possession 
     and adds various annotations.
     """"""
 
-    def __init__(self, obj_tracker: objecttracker, kp_tracker"|": KeypointsTracker, 
+    def __init__(self, obj_tracker: ObjectTracker, kp_tracker"|": KeypointsTracker, 
                  club_assigner: ClubAssigner, ball_to_player_assigner: BallToPlayerAssigner, 
                  top_down_keypoints: np.ndarray, field_img_path: str, 
                  save_tracks_dir: Optional[str] = None, draw_frame_num: bool = True) -> None:
@@ -1463,13 +1472,14 @@ class FootballVideoProcessor(AbstractAnnotator, AbstractVideoProcessor):
             kp_tracker (KeypointsTracker): The keypoints tracker for detecting and tracking keypoints.
             club_assigner (ClubAssigner): Assigner to determine clubs for the tracked players.
             ball_to_player_assigner (BallToPlayerAssigner): Assigns the ball to a specific player based on tracking.
-            top_down_keypoints (np.ndarray): Key"|"and saves them to a json file.
+            top_down_keypoints (np.ndarray): Key"|"
+    and saves them to a json file.
     """"""
 
     def __init__(self, 
-                 obj_tracker: objecttracker, 
-                 kp_tracker: keypointstracker, 
-                 clu"|1|Some parts are similar, but some are incorrect.|False|55.974004096606656|0.17937980782158092|0.5|0.3684210526315789|0.45
+                 obj_tracker: ObjectTracker, 
+                 kp_tracker: KeypointsTracker, 
+                 clu"|1|Some parts are similar, but some are incorrect.|False|47.805075425029194|0.4117168583832772|0.4782608695652174|0.3636363636363636|0.43478260869565216
 code_examples\main.py|" Object to automatically assign players and goalkeepers 
     # to their respective clubs based on jersey colors.
     club_assigner = ClubAssigner(club1, club2)
@@ -1483,11 +1493,11 @@ code_examples\main.py|" Object to automatically assign players and goalkeepers
         [0, 0], [0, 57], [0, 122], [0, 229], [0, 293], [0, 351],             # 0-5 (left goal line)
         [32, 122], [32, 2"|"29],                                                # 6-7 (left goal box corners)
         [64, 176],                                                           # 8 (left penalty dot)
-        [96,"|"57], [96, 122], [96, 229], [96, 293],                           # 9-12 (left penalty box)
+        [96, "|"57], [96, 122], [96, 229], [96, 293],                           # 9-12 (left penalty box)
         [263, 0], [263, 122], [263, 229], [263, 351],                        # 13-16 (halfway line)
         [431, 57], [431, 122], [431, 229], [431, 293],                       # 17-20 (right penalty box)
         [463, 176],                                                          # 21 (right penalty dot)
-        [495, 122], [495, 229],                                              # 22-23 (right goal"|29], [32, 351], [32, 431], [32, 463], [32, 5|1|Makes sense. This example is hard to predict.|False|6.95858414509501|0.01231189487700387|0.08695652173913043|0.0|0.08695652173913043
+        [495, 122], [495, 229],                                              # 22-23 (right goal"|29], [32, 351], [32, 431], [32, 463], [32, 5|1|Makes sense. This example is hard to predict.|False|6.191740085066848|0.04061552016646254|0.25641025641025644|0.05405405405405406|0.25641025641025644
 code_examples\tracks_json_writer.py|" the file.
         """"""
         # Convert all tracks to a serializable format
@@ -1508,13 +1518,13 @@ code_examples\tracks_json_writer.py|" the file.
             json.dump(data_to_save, f, indent=4)  # Added indent for better readability
 
     def _make_serializable(self, obj: Any) -> Any:
-        """"""Recursively convert objects to"|"a json-serializable format.
+        """"""Recursively convert objects to"|" a JSON-serializable format.
 
-        args:
-            obj (any): the object to convert.
+        Args:
+            obj (Any): The object to convert.
 
-        returns:
-            any: a json-serializable representation of the object.
+        Returns:
+            Any: A JSON-serializable representation of the object.
         """"""
         if"|" isinstance(obj, dict):
             # Ensure both keys and values are serializable
@@ -1534,15 +1544,16 @@ code_examples\tracks_json_writer.py|" the file.
         elif isinstance(obj, (np.floating, np.float32, np.float64)):
             # Convert numpy float to Python float
             return float(obj)
-       "|"serializable format.
+       "|" serializable format.
 
-        args:
-            obj (any): object to convert.
+        Args:
+            obj (Any): Object to convert.
 
-        returns:
-            any: serializable object.
+        Returns:
+            Any: Serializable object.
         """"""
-        if isinstance(obj, dict):"|0|Almost fully correct|False|59.67960856898821|0.3577089341582487|0.7027027027027026|0.5142857142857143|0.7027027027027026
+        if isinstance(obj, dict):
+          "|0|Almost fully correct|False|66.90352025844591|0.5510604370501154|0.65|0.5263157894736842|0.65
 code_examples\ball_to_player_assigner.py|"_ball = self.last_player_w_ball
                             self.possession_tracker.add_possession(self.last_possessing_team)
 
@@ -1556,12 +1567,13 @@ code_examples\ball_to_player_assigner.py|"_ball = self.last_player_w_ball
                                 self.possession_tracker.add_possession(self.last_possessing_team)
                         else:
                             self.possession_tracker.add_possession(-1)
-                            self.last_player_w_ball"|"= none  
+                            self.last_player_w_ball"|" = None  
                     else:
                         self.possession_tracker.add_possession(-1)
 
         else:
-            if self.last_player_w_ball is not none:"|" elapsed_frames_since_ball_seen = current_frame - self.ball_lost_frame if self.ball_lost_frame else float('inf')
+            if self.last_player_w_ball is not None:
+               "|" elapsed_frames_since_ball_seen = current_frame - self.ball_lost_frame if self.ball_lost_frame else float('inf')
 
                 if elapsed_frames_since_ball_seen <= self.ball_grace_period_frames:
                     player_w_ball = self.last_player_w_ball
@@ -1575,7 +1587,7 @@ code_examples\ball_to_player_assigner.py|"_ball = self.last_player_w_ball
                         self.possession_tracker.add_possession(tracks['goalkeeper'][player_"|"_ball = player_w_ball
                             self.possession_tracker.add_possession(self.last_possessing_team)
 
-                    if self.ball"|2|Makes some sense, but it is incorrect.|False|49.69202350526138|0.024925978674400287|0.6470588235294118|0.5|0.47058823529411764
+                    if self.ball"|2|Makes some sense, but it is incorrect.|False|66.98464880191078|0.3753345754580911|0.65|0.5263157894736842|0.5
 code_examples\projection_annotator.py|"=is_dark_color)
 
         if 'ball' in tracks:
@@ -1588,7 +1600,7 @@ code_examples\projection_annotator.py|"=is_dark_color)
 
         return frame
 
-    def _draw_voronoi(self, image: np.ndarray, tracks: dict"|") -> np.ndarray:
+    def _draw_voronoi(self, image: np.ndarray, tracks: Dict"|") -> np.ndarray:
         """"""
         Draws Voronoi regions for players and goalkeepers on the frame.
         
@@ -1609,7 +1621,7 @@ code_examples\projection_annotator.py|"=is_dark_color)
                 x, y = track_info['projection'][:2]
                 points.append([x, y])
                 player_colors.append(rgb_bgr_converter(track_info['club_color"|"pos[1]) + 10, color=color, thickness=6)
-                cv2.line(frame, (int(proj_pos[0]), int(pro"|1|Started out well, but the rest of the lines do not share a lot of similarities.|False|41.36749611354587|0.04446426575347835|0.47058823529411764|0.37500000000000006|0.47058823529411764
+                cv2.line(frame, (int(proj_pos[0]), int(pro"|1|Started out well, but the rest of the lines do not share a lot of similarities.|False|41.0218105271709|0.3561691349239914|0.4615384615384615|0.37837837837837834|0.4615384615384615
 code_examples\ball_to_player_assigner.py|"_key, ball_pos in valid_ball_tracks:
                 for player_id, player in players.items():
                     player_pos = player['projection']
@@ -1627,7 +1639,7 @@ code_examples\ball_to_player_assigner.py|"_key, ball_pos in valid_ball_tracks:
 
                 if player_w_ball != -1 and 'club' in players[player_w_ball]:
                     self.possession_tracker.add_possession(players[player_w_ball]['club'])
-                   "|"self.last_player_w_ball = player_w_ball
+                   "|" self.last_player_w_ball = player_w_ball
                     self.last_possession_frame = current_frame  
                     self.last_possessing_team ="|" players[player_w_ball]['club']
 
@@ -1644,8 +1656,8 @@ code_examples\ball_to_player_assigner.py|"_key, ball_pos in valid_ball_tracks:
                     if self.last_player_w_ball is not None:
                         elapsed_frames = current_frame - self.last_possession_frame
                         if elapsed_frames <= self.grace_period_frames:
-                            player_w"|"self.last_player_w_ball = player_w_ball
-                    self.last_possessing_team =<|endoftext|"|0|One line is missing, but mostly correct|False|65.03288122958423|0.15681965572642162|0.7741935483870968|0.7586206896551724|0.7741935483870968
+                            player_w"|" self.last_player_w_ball = player_w_ball
+                    self.last_possessing_team =<|endoftext|"|0|One line is missing, but mostly correct|False|65.11064158658036|0.6210375636362915|0.7567567567567567|0.7428571428571429|0.7567567567567567
 code_examples\football_video_processor.py|"points to map objects to top-down positions.
             field_img_path (str): Path to the image of the football field used for projection.
             save_tracks_dir (Optional[str]): Directory to save tracking information. If None, no tracks will be saved.
@@ -1662,7 +1674,7 @@ code_examples\football_video_processor.py|"points to map objects to top-down pos
         self.obj_mapper = ObjectPositionMapper(top_down_keypoints)
         self.draw_frame_num = draw_"|"frame_num
         if self.draw_frame_num:
-            self.frame_num_annotator = framenumberannotator() 
+            self.frame_num_annotator = FrameNumberAnnotator() 
 
         if save_tracks_dir:
             self.save"|"_tracks_dir = save_tracks_dir
@@ -1684,12 +1696,12 @@ code_examples\football_video_processor.py|"points to map objects to top-down pos
 
     def process(self, frames: List[np.ndarray], fps: float ="|"frame_num
 
-        self.field_image = none
+        self.field_image = None
 
         self.save_tracks_dir = save_tracks_dir
-        self.writer = none
+        self.writer = None
 
-    def process(self"|2|Mostly wrong|False|21.265620786183693|0.020255986027125642|0.4864864864864865|0.34285714285714286|0.43243243243243246
+    def process(self"|2|Mostly wrong|False|36.732491122950925|0.1735448402515365|0.43902439024390244|0.30769230769230765|0.3902439024390244
 code_examples\object_tracker.py|".model.predict(resized_frames, conf=self.conf)
 
         return detections  # Batch of detections
@@ -1715,10 +1727,10 @@ code_examples\object_tracker.py|".model.predict(resized_frames, conf=self.conf)
         # Store the current frame's tracking information in all_tracks
         self.all_tracks[self.cur_frame] = self.current_frame_tracks.copy()
 
-        # Increment the current"|"frame counter
+        # Increment the current"|" frame counter
         self.cur_frame += 1
 
-        # return only the last frame's data
+        # Return only the last frame's data
         return self.current_frame_tracks
     
     def _preprocess_frame(self, frame:"|" np.ndarray) -> np.ndarray:
@@ -1743,12 +1755,13 @@ code_examples\object_tracker.py|".model.predict(resized_frames, conf=self.conf)
             tracks (sv.Detections): Tracks from the frame.
             class_names (List[str]): List of class names.
 
-       "|"tracks counter
+       "|" tracks counter
         self.current_frame_tracks += 1
 
         return tracks
 
-    def _get_frame_id(self, frame: np.ndarray) -> int:"|2|Not a lot of similarities.|False|37.32058469739442|0.03303818021165423|0.5365853658536586|0.358974358974359|0.4878048780487805
+    def _get_frame_id(self, frame: np.ndarray) -> int:
+      "|2|Not a lot of similarities.|False|48.985217681232456|0.3693509140400323|0.5365853658536586|0.358974358974359|0.4878048780487805
 code_examples\object_annotator.py|" center.
             w (int): The width (major axis) of the ellipse.
             color (Tuple[int, int, int]): The color of the ellipse.
@@ -1766,7 +1779,7 @@ code_examples\object_annotator.py|" center.
     def draw_ellipse(self, frame: np.ndarray, bbox: Tuple[int, int, int, int], color: Tuple[int, int, int], 
                      track"|"_id: int, speed: float, obj_cls: str = 'player') -> np.ndarray:
         """"""
-        draws an ellipse around an object and annotates it with its"|" ID and speed.
+        Draws an ellipse around an object and annotates it with its"|" ID and speed.
 
         Args:
             frame (np.ndarray): The frame where the ellipse will be drawn.
@@ -1783,4 +1796,4 @@ code_examples\object_annotator.py|" center.
         color2 = (255, 255, 255) if is_color_dark(color) else (0, 0, 0)
 
         # Get the position and"|"_id: int, speed: float, obj_cls: str = 'player', track_type: str = 'track',
-                     track_id_type: str ="|1|Started out well, but the rest is wrong.|False|41.302317418935075|0.25093606881767766|0.4324324324324324|0.4|0.4324324324324324
+                     track_id_type: str = "|1|Started out well, but the rest is wrong.|False|42.26073584167892|0.4075464204113386|0.4|0.3684210526315789|0.4

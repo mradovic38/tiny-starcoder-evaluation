@@ -49,18 +49,24 @@ ROUGE calculates the recall of n-grams between the reference and predicted texts
 In evaluating the performance of the Tiny Starcoder model, several metrics were analyzed for their correlation with manual labels. I have computed the Pearson and Spearman correlations between the manually created labels and various metrics.
 ### Insights:
 Most metrics exhibited negative correlations, which can be attributed to the labeling system where 0 indicates correctness and 2 indicates incorrectness.
-1. **Avoid Using Exact Match**: Since the exact match did not provide meaningful correlations, it should not be used in evaluation.
+1. **Exact Match has no meaningful correlation with the manual labels**, as both Pearson and Spearman correlations are undefined.
 
-2. **Use BLEU and chrF**: The negative correlations for both the chrF score and the BLEU score indicate that these metrics are inversely related to the quality of the predictions. As these scores increase, the likelihood of being labeled as correct also increases, making them strong candidates for evaluating model performance.
+2. **chrf has a moderate correlation**, indicating that this metric aligns reasonably well with manual evaluations.
 
-3. **The ROUGE metrics** (ROUGE-1, ROUGE-2, and ROUGE-L) show similar trends, with negative correlations. These scores also effectively reflect the model's ability to generate relevant and coherent code completions, particularly in terms of n-gram overlap.
+3. **BLEU demonstrates the strongest correlation with manual labels**, making it the most reliable metric in this evaluation.
+
+4. **ROUGE-1 and ROUGE-2 and ROUGE-L also show moderate positive correlations**, indicating moderate agreement with manual labels.
 
 ### Final Thoughts - Which Metrics to Choose?
-1. **Focus on chrF and BLEU scores** for evaluating model performance, as they demonstrate a robust inverse relationship with manual correctness labels.
+1. **Focus on BLEU score for evaluating model performance**
 
-2. **Consider ROUGE scores as supplementary metrics**, especially for understanding the quality of generated outputs in relation to reference completions.
+2. **Consider ROUGE-L, ROUGE-2 and ROUGE-1 scores as secondary metrics**, providing additional insights into the quality of generated outputs compared to reference completions.
 
-3. **Do not use exact match**, as it may not capture the complexity of code generation tasks where variations can still be valid.
+3. **Do not use exact match**, as it shows no significant correlation and may fail to capture the nuances of code generation tasks where variations in output can still be valid.
+
+### Summary of Recommended Metrics:
+1. **Primary Metric**: BLEU
+2. **Secondary Metrics**: ROUGE-L, and maybe ROUGE-2 and ROUGE-1
 
 ## 🏆 Acknowledgements
 * [Tiny Starcoder](https://huggingface.co/bigcode/tiny_starcoder_py)
