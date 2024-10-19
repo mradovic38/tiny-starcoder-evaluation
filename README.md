@@ -8,11 +8,11 @@ To prepare the dataset for the model, I implemented the `SplitGenerator` class, 
 
 The process works as follows:
 - **Tokenization**: The code is tokenized using a provided tokenizer.
-```
+```python
 tokens = self.tokenizer.tokenize(code)
 ```
 - **Splitting**: The tokens are divided into prefix, middle, and suffix, ensuring that each part fits the specified lengths.
-```
+```python
 prefix = tokens[current_position:current_position + self.prefix_length]
 middle = tokens[current_position + self.prefix_length:current_position +
                            self.prefix_length + self.middle_length]
