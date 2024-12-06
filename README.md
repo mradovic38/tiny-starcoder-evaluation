@@ -45,11 +45,11 @@ BLEU measures the overlap of n-grams between the predicted output and reference 
 ROUGE calculates the recall of n-grams between the reference and predicted texts, with several variants (ROUGE-1, ROUGE-2, ROUGE-L) measuring unigram, bigram, and longest common subsequence matches, respectively.
  - **Why did I choose ROUGE?**: It could provide insights into the completeness and relevance of the generated code, making it effective for understanding how well the model captures key elements of the reference completions.
 
-## [Choosing the Best Metrics](tiny_starcoder_evaluation.ipynb)
+## [Calculating which metrics align the most with manual evaluations](tiny_starcoder_evaluation.ipynb)
 In evaluating the performance of the Tiny Starcoder model, several metrics were analyzed for their correlation with manual labels. I have computed the Pearson and Spearman correlations between the manually created labels and various metrics.
 ### Insights:
 Most metrics exhibited negative correlations, which can be attributed to the labeling system where 0 indicates correctness and 2 indicates incorrectness.
-1. **Exact Match has no meaningful correlation with the manual labels**, as both Pearson and Spearman correlations are undefined.
+1. **Exact Match has no meaningful correlation with the manual labels**, since there are no exact matches.
 
 2. **chrf has a moderate correlation**, indicating that this metric aligns reasonably well with manual evaluations.
 
@@ -57,16 +57,6 @@ Most metrics exhibited negative correlations, which can be attributed to the lab
 
 4. **ROUGE-1 and ROUGE-2 and ROUGE-L also show moderate positive correlations**, indicating moderate agreement with manual labels.
 
-### Final Thoughts - Which Metrics to Choose?
-1. **Focus on BLEU score for evaluating model performance**
-
-2. **Consider ROUGE-L, ROUGE-2 and ROUGE-1 scores as secondary metrics**, providing additional insights into the quality of generated outputs compared to reference completions.
-
-3. **Do not use exact match**, as it shows no significant correlation and may fail to capture the nuances of code generation tasks where variations in output can still be valid.
-
-### Summary of Recommended Metrics:
-1. **Primary Metric**: BLEU
-2. **Secondary Metrics**: ROUGE-L, and maybe ROUGE-2 and ROUGE-1
 
 ## 🏆 Acknowledgements
 * [Tiny Starcoder](https://huggingface.co/bigcode/tiny_starcoder_py)
