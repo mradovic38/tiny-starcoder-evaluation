@@ -58,7 +58,7 @@ Most metrics exhibited negative correlations, which can be attributed to the lab
 4. **ROUGE-1 and ROUGE-2 and ROUGE-L also show moderate positive correlations**, indicating moderate agreement with manual labels.
 
 
-## 🏆 Acknowledgements
+## 📖 Resources
 * [Tiny Starcoder](https://huggingface.co/bigcode/tiny_starcoder_py)
 * Lin, Chin-Yew. 2004. ROUGE: a Package for Automatic Evaluation of Summaries. In Pro-ceedings of the Workshop on Text Summari-zation  Branches  Out  (WAS  2004),  Barce-lona, Spain, July 25 - 26, 2004
 * Kishore  Papineni  and  Salim  Roukos  and Todd  Ward  and  Wei-jing  Zhu  BLEU:  a Method  for  Automatic  Evaluation  of  Ma-chine Translation /  Proceedings of the 40th Annual Meeting of the Association for Com-putational  Linguistics  (ACL),  Philadelphia, July 2002, pp. 311-318.
